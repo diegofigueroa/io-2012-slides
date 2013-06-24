@@ -40,24 +40,134 @@
       
       <slide>
 	<hgroup>
-	  <h2>Slide with Bullets</h2>
+	  <h2>Compiladores</h2>
+	  <h3>Anatomía</h3>
 	</hgroup>
 	<article>
+	  <p>Normalmente dividido en fases:</p>
 	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
+	    <li>Análisis léxico</li>
+	    <li>Análisis sintáctico</li>
+	    <li>Análisis semántico</li>
+	    <li>Arbol de sintaxis abstracta (AST)</li>
+	    <li>Representación intermedia a bajo nivel (IRT)</li>
+	    <li>Optimización</li>
+	    <li>Generación de código</li>
 	  </ul>
 	</article>
       </slide>
-
       
-
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Funcionamiento</h3>
+	</hgroup>
+	<article>
+	  <p>Un compilador recibe un programa escrito en algún lenguaje de programación como input, y debe generar una representación de ese programa en otro lenguaje.</p>
+	  <p>Este programa es tratado por el compilador como datos, un texto a procesar.</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Análisis Léxico (Scanner)</h3>
+	</hgroup>
+	<article>
+	  <p>Primera fase de un compilador.</p>
+	  <p>Conocido coloquialmente como el scanner.</p>
+	  <p>Su función es dividir el texto de entrada (el programa) en palabras (tokens).</p>
+	  <p>
+	    Ejemplo:
+	    <br/>
+	    <h1 class="centered">if x == y then z = 1; else z = 2;</h1>
+	  </p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Análisis Sintáctico (Parser)</h3>
+	</hgroup>
+	<article>
+	  <p>Segunda fase de un compilador.</p>
+	  <p>Conocido coloquialmente como el parser.</p>
+	  <p>Su función es tomar los tokens identificados por el scanner, y analizar su estructura.</p>
+	  <p>En otras palabras, construir oraciones.</p>
+	  <p>
+	    Ejemplo:
+	    <br/>
+	    <h1 class="centered">Este texto es una oración.</h1>
+	  </p>
+	</article>
+	<aside class="note">
+	  <section>
+	    <ul>
+	      <li>Este	-> artículo</li>
+	      <li>texto	-> sustantivo</li>
+	      <li>es	-> verbo</li>
+	      <li>una	-> artículo</li>
+	      <li>oración	-> sustantivo</li>
+	    </ul>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Análisis Semántico</h3>
+	</hgroup>
+	<article>
+	  <p>Una vez analizamos la estructura podemos intentar analizar el sentido.</p>
+	  <p>Examinar el sentido o significado de cada sentencia.</p>
+	  <p>Esto es muy difícil para un programa, por lo que se hace de forma limitada.</p>
+	  <p>Mayormente chequeos de unicidad, de tipos, control de flujo, etc.</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>IRT</h3>
+	</hgroup>
+	<article>
+	  <p>Transformar el árbol de sintáxis a una estructura plana.</p>
+	  <p>Utilizando instrucciones genéricas, independientes de cualquier arquitectura.</p>
+	  <p>Esto facilita el trabajo del generador de código.</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Optimización</h3>
+	</hgroup>
+	<article>
+	  <p>Reemplazar instrucciones por instrucciones.</p>
+	  <p>Dichos reemplazos buscan mejorar el funcionamiento del programa de acuerdo a cierto criterio:</p>
+	  <ul>
+	    <li>Uso de memoria</li>
+	    <li>Uso de CPU.</li>
+	    <li>Tamaño del programa (bytes).</li>
+	    <li>Uso de energía.</li>
+	    <li>Etc.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Generación de código</h3>
+	</hgroup>
+	<article>
+	  <p>Toma las instrucciones del IRT y las traduce al lenguaje objetivo.</p>
+	  <p>Esto genera código ejecutable en el lenguaje objetivo.</p>
+	</article>
+      </slide>
+      
       <slide class="logoslide dark nobackground">
       </slide>
 
