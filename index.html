@@ -58,6 +58,38 @@
       </slide>
       
       <slide>
+	<article class="flexbox vcenter">
+	  <img src="images/anatomy.png" alt="Anatomía del compilador" title="Anatomía del compilador">
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Compiladores</h2>
+	  <h3>Anatomía</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Análisis:
+	      <ul class="build">
+		<li>Análisis léxico.</li>
+		<li>Análisis sintáctico.</li>
+		<li>Análisis semántico.</li>
+	      </ul>
+	    </li>
+	    <li>Síntesis:
+	      <ul class="build">
+		<li>Arbol de sintaxis abstracta (AST).</li>
+		<li>Representación intermedia a bajo nivel (IRT).</li>
+		<li>Optimización.</li>
+		<li>Generación de código.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
 	<hgroup>
 	  <h2>Compiladores</h2>
 	  <h3>Funcionamiento</h3>
@@ -168,6 +200,69 @@
 	<article>
 	  <p>Toma las instrucciones del IRT y las traduce al lenguaje objetivo.</p>
 	  <p>Esto genera código ejecutable en el lenguaje objetivo.</p>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Compiladores y Lenguajes</h2>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Lenguajes</h2>
+	  <h3>Definiciones</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Alfabeto:
+	      <ul class="build">
+		<li>Conjunto finito de símbolos.</li>
+		<li>Comúnmente representado por el símbolo &Sigma;.</li>
+		<li>{0,1} -> Alfabeto binario.</li>
+		<li>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9} -> Alfabeto decimal.</li>
+		<li>ASCII -> Alfabeto para representación de texto en computadoras.</li>
+	      </ul>
+	    </li>
+	    <li>String:
+	      <ul class="build">
+		<li>Secuencia finita de símbolos tomados de un alfabeto.</li>
+		<li>01011 -> String sobre el alfabeto binario.</li>
+		<li>3141516 -> String sobre el alfabeto decimal.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Lenguajes</h2>
+	  <h3>Definiciones</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Lenguaje:
+	      <ul class="build">
+		<li>Conjunto de strings construidos en base a un alfabeto.</li>
+		<li>Ej:
+		  <ul>
+		    <li>Lenguaje binario, conjunto de todos los strings posibles sobre el alfabeto binario.</li>
+		  </ul>
+		</li>
+		<li>Clasificados según sus características:
+		  <ul>
+		    <li><b>Lenguajes regulares</b>.</li>
+		    <li><b>Lenguajes libres de contexto</b>.</li>
+		    <li>Lenguajes sensibles al contexto.</li>
+		    <li>Lenguajes sin restricción.</li>
+		  </ul>
+		</li>
+	      </ul>
+	    </li>
+	  </ul>
 	</article>
       </slide>
       
