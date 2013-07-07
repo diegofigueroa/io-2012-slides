@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <!--This one seems to work all the time, but really small on ipad-->
+    <!--<meta name="viewport" content="initial-scale=0.4">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" media="all" href="theme/css/default.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+    <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+    <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+  </head>
+  <body style="opacity: 0">
+    <slides class="layout-widescreen">
+
+      <slide class="logoslide nobackground">
+	<article class="flexbox vcenter">
+	  <span><img src="images/ug.jpeg"></span>
+	</article>
+      </slide>
+
+      <slide class="title-slide segue nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+	<hgroup class="auto-fadein">
+	  <h1 data-config-title><!-- populated from slide_config.json --></h1>
+	  <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+	  <p data-config-presenter><!-- populated from slide_config.json --></p>
+	</hgroup>
+      </slide>
+      
+      <!-- Content starts HERE! -->
+      
+      
+      
+      <slide>
+	<hgroup>
+	  <h2>Agenda</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>De qu&eacute; trata el curso?</li>
+	    <li>Introducci&oacute;n e informaci&oacute;n de la clase
+	      <ul>
+		<li>Personal del curso</li>
+		<li>Recursos</li>
+		<li>Organizaci&oacute;n</li>
+	      </ul>
+	    </li>
+	    <li>Reglas del juego</li>
+	  </ul>
+	</article>
+      </slide>
+
+      <slide>
+	<hgroup>
+	  <h2>De qu&eacute; trata este curso?</h2>
+	  <h3>(Y de qué no trata)</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Implementaci&oacute;n de lenguajes de programaci&oacute;n
+	      <ul>
+		<li>Compiladores</li>
+		<li>Int&eacute;rpretes</li>
+	      </ul>
+	    </li>
+	    <li>Estudio e implementaci&oacute;n de compiladores:
+	      <ul class="build">
+		<li>An&aacute;lisis l&eacute;xico</li>
+		<li>An&aacute;lisis sint&aacute;ctico</li>
+		<li>&Aacute;rbol de sint&aacute;xis abstracta</li>
+		<li>An&aacute;lisis sem&aacute;ntico</li>
+		<li>Representaci&oacute;n intermedia a bajo nivel</li>
+		<li>Generaci&oacute;n de c&oacute;digo</li>
+		<li>Optimizaci&oacute;n</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>De qu&eacute; NO trata este curso?</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Aprender a programar</li>
+	    <li>Aprender Java</li>
+	  </ul>
+	  <p>Usted ya sabe ambas cosas, es hora de ponerlas en pr&aacute;ctica. :D</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Implementaci&oacute;n de lenguajes</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Compiladores</li>
+	    <li>Int&eacute;rpretes</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Implementaci&oacute;n de lenguajes</h2>
+	  <h3>Int&eacute;rpretes</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Su tarea es <b>ejecutar</b> un programa (usualmente de alto nivel) en el CPU.</li>
+	    <li>Ejecuta instrucci&oacute;n por instrucci&oacute;n.</li>
+	    <li>Entrada (Input):
+	      <ul class="build">
+		<li>Programa</li>
+		<li>Datos del usuario</li>
+	      </ul>
+	    </li>
+	    <li>Salida (Output):
+	      <ul class="build">
+		<li>Resultados del programa</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Implementaci&oacute;n de lenguajes</h2>
+	  <h3>Int&eacute;rpretes</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Ventajas:
+	      <ul class="build">
+		<li>Independiente de la arquitectura</li>
+		<li>Portabilidad</li>
+		<li>Distribuci&oacute;n</li>
+	      </ul>
+	    </li>
+	    <li>Desventajas:
+	      <ul class="build">
+		<li>Rendimiento más pobre comparado a un compilador</li>
+		<li>"On-line", necesario cada vez que se quiera ejecutar el programa.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Implementaci&oacute;n de lenguajes</h2>
+	  <h3>Compiladores</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Su tarea es <b>traducir</b> un programa de un lenguaje (usualmente de alto nivel) a otro lenguaje (usualmente de bajo nivel).</li>
+	    <li>Entrada (Input):
+	      <ul class="build">
+		<li>Programa</li>
+	      </ul>
+	    </li>
+	    <li>Salida (Output):
+	      <ul class="build">
+		<li>Ejecutable</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Implementaci&oacute;n de lenguajes</h2>
+	  <h3>Compiladores</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Ventajas:
+	      <ul class="build">
+		<li>Mejor rendimiento.</li>
+		<li>"Off-line", no es necesario para ejecutar el programa.</li>
+	      </ul>
+	    </li>
+	    <li>Desventajas:
+	      <ul class="build">
+		<li>Dependiente de la arquitectura.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Implementaci&oacute;n de lenguajes</h2>
+	  <h3>Compiladores</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Componentes:
+	      <ul class="build">
+		<li>An&aacute;lisis l&eacute;xico</li>
+		<li>An&aacute;lisis sint&aacute;ctico</li>
+		<li>&Aacute;rbol de sint&aacute;xis abstracta</li>
+		<li>An&aacute;lisis sem&aacute;ntico</li>
+		<li>Representaci&oacute;n intermedia a bajo nivel</li>
+		<li>Generaci&oacute;n de c&oacute;digo</li>
+		<li>Optimizaci&oacute;n</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+	<aside class="note">
+	  <section>
+	    <ul>
+	      <li>Optimización puede hacerse antes o después de la generación de código.</li>
+	      <li>Optimización generalmente no produce un programa óptimo, únicamnete una mejora.</li>
+	    </ul>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Introducci&oacute;n</h2>
+	  <h3>Informaci&oacute;n administrativa</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Personal del curso</h2>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <img src="images/payroll.png" alt="Organigrama" title="Organigrama" height="500px">
+	    <ul>
+	      <li>Auxiliar de clase
+		<ul>
+		  <li>Cecilia Castillo (cicicas@galileo.edu)</li>
+		</ul>
+	      </li>
+	      <li>Auxiliar de laboratorio
+		<ul>
+		  <li>Juan Luis Flores (jlfloresp@galileo.edu)</li>
+		</ul>
+	      </li>
+	      <li>Corrector
+		<ul>
+		  <li>Carlos Alvarez (carlosalvarez@galileo.edu)</li>
+		</ul>
+	      </li>
+	    </ul>
+	  </div>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Bibliograf&iacute;a</h2>
+	  <h3>Libro del drag&oacute;n</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <img src="images/dragon.jpg" alt="Libro del dragon" title="Libro del dragon" height="400px">
+	    <ul>
+	      <li>Compilers Principles, Techniques and Tools.</li>
+	      <li>Aho, Sethi y Ullman.</li>
+	      <li>ISBN-10: <b>0201100886</b>.</li>
+	      <li>Desde ~$2 en <a href="http://www.amazon.com/gp/product/0201100886/ref=oh_details_o00_s00_i00?ie=UTF8&psc=1">Amazon</a>.</li>
+	    </ul>
+	  </div>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Bibliograf&iacute;a</h2>
+	  <h3>Libro del drag&oacute;n (2da edici&oacute;n)</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <img src="images/dragon-2.jpg" alt="Libro del dragon" title="Libro del dragon" height="400px">
+	    <ul>
+	      <li>Compilers Principles, Techniques and Tools.</li>
+	      <li>Aho, Sethi y Ullman.</li>
+	      <li>ISBN-10: <b>0321486811</b>.</li>
+	      <li>Desde ~$72 en <a href="http://www.amazon.com/Compilers-Principles-Techniques-Tools-Edition/dp/0321486811/ref=dp_ob_title_bk">Amazon</a>.</li>
+	    </ul>
+	  </div>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Bibliograf&iacute;a</h2>
+	  <h3>Otros</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Libro del tigre</li>
+	    <li>Libro de la ballena</li>
+	    <li>Libro del arca</li>
+	  </ul>
+	  <div class="flexbox vcenter columns-3">
+	    <a href="http://www.cs.princeton.edu/~appel/modern/java/">
+	      <img src="images/tiger.jpg" alt="Libro del tigre" title="Libro del tigre" height="320px"/>
+	    </a>
+	    <a href="http://www.amazon.com/Advanced-Compiler-Design-Implementation-Muchnick/dp/1558603204/ref=sr_1_1?s=books&ie=UTF8&qid=1372014496&sr=1-1&keywords=1558603204">
+	      <img src="images/whale.png" alt="Libro de la ballena" title="Libro de la ballena" height="320px"/>
+	    </a>
+	    <a href="http://www.amazon.com/Engineering-Compiler-Second-Edition-Cooper/dp/012088478X/ref=dp_ob_title_bk">
+	      <img src="images/ark.jpg" alt="Libro del arca" title="Libro del arca" height="320px"/>
+	    </a>
+	  </div>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Sobre la clase</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Tenemos 7 periodos de clase semanales:
+	      <ul class="build">
+		<li>Clases Magistrales (4 periodos semanales).
+		  <ul class="build">
+		    <li>Se toma en cuenta la participaci&oacute;n de TODOS.</li>
+		    <li>Los slides NO son la clase, no se confíen.</li>
+		  </ul>
+		</li>
+		<li>Laboratorios (3 periodos semanales).
+		  <ul class="build">
+		    <li>Una asignaci&oacute;n de laboratorio por semana (normalmente).</li>
+		    <li>Se debe entregar la siguiente semana.</li>
+		  </ul>
+		</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Distribuci&oacute;n de notas</h2>
+	</hgroup>
+	<article>
+	  <table class="rows">
+	    <tr>
+	      <th>Hojas de Trabajo</th>
+	      <td>5%</td>
+	    </tr>
+	    <tr>
+	      <th>Laboratorios**</th>
+	      <td>15%</td>
+	    </tr>
+	    <tr>
+	      <th>Examenes</th>
+	      <td>30%</td>
+	    </tr>
+	    <tr>
+	      <th>Proyecto</th>
+	      <td>50%</td>
+	    </tr>
+	    <tr>
+	      <th>Total</th>
+	      <td class="highlight">100%</td>
+	    </tr>
+	  </table>
+	  <footer class="source">**80% m&iacute;nimo, 60% de nota m&iacute;nima.</footer>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Reglas del juego</h2>
+	  <h3>No c&oacute;digo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Queda prohibido:
+	      <ul>
+		<li>Poseer (o tomar) la soluci&oacute;n de otro estudiante o una soluci&oacute;n parcial en cualquier forma (electr&oacute;nica, escrita o impresa).</li>
+		<li>Compartir la soluci&oacute;n o soluci&oacute;n parcial a otro estudiante, incluso bajo el entendimiento de que no va a ser copiada.</li>
+		<li>Trabajar juntos para desarrollar una sola soluci&oacute;n y luego entregar copias (o versiones modificadas) de esta soluci&oacute;n bajo m&uacute;ltiples nombres.</li>
+	      </ul>
+	    </li>
+	    <li>Se utilizará software automático de detección de copia.
+	      <ul>
+		<li>La primera vez que se les sorprenda copiando, TODOS los involucrados tendrán –100.</li>
+		<li>La segunda vez que se les sorprenda tendrán 0 (CERO) en el curso y se adjuntará una carta a su expediente detallando el incidente.</li>
+	      </lu>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Reglas del juego</h2>
+	  <h3>Ex&aacute;menes</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>2 ex&aacute;menes parciales.</li>
+	    <li>1 examen final.</li>
+	  </ul>
+	  <ul class="build">
+	    <li>NO se repiten ex&aacute;menes bajo ning&uacute;n motivo.</li>
+	    <li>Se realizar&aacute; un examen de resposici&oacute;n al final del curso.</li>
+	    <li>Sujetos al reglamento de la Universidad: Si se les sorprende copiando tienen 0 (CERO) en el curso la primera vez y ser&aacute;n <b class="red">expulsados</b> de la universidad la segunda vez.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Reglas del juego</h2>
+	  <h3>Entregas tarde</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>4 entregas tarde de 1 día cada una, durante el semestre.</li>
+	    <li>Una entrega tarde comprende desde 1 minuto después de la hora de entrega y un máximo de 24 horas.</li>
+	    <li><b class="red">NO se aceptarán excusas bajo ningún motivo después de agotado este recurso.</b></li>
+	    <br/>
+	    <li>Para utilizar este mecanismo debe enviar junto a su soluci&oacute;n un archivo de texto llamado <b>comodin.txt</b></li>
+	    <li>Se llevar&aacute; un listado en el GES con el inventario de comodines por estudiante.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Reglas del juego</h2>
+	  <h3>Forma de entrega</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li><b>Exclusivamente</b> por medio del GES.</li>
+	    <li>Es <b>resposabilidad</b> del <b class="red">estudiante</b> verificar que se le asigne un grupo para las tareas grupales.</li>
+	    <li>Si no entrega una tarea por no tener grupo, su nota ser&aacute; 0 (CERO).</li>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Proyecto</h2>
+	  <h3>Compilador de Decaf</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Lenguaje a compilar:
+	      <ul>
+		<li>Decaf</li>
+	      </ul>
+	    </li>
+	    <li>Lenguaje objetivo:
+	      <ul>
+		<li>Assembler de MIPS</li>
+	      </ul>
+	    </li>
+	    <li>Organizado en 6 fases:
+	      <ul>
+		<li>An&aacute;lisis l&eacute;xico y sint&aacute;ctico</li>
+		<li>&Aacute;rbol de sint&aacute;xis abstracta</li>
+		<li>An&aacute;lisis sem&aacute;ntico</li>
+		<li>Representaci&oacute;n intermedia a bajo nivel</li>
+		<li>Generaci&oacute;n de c&oacute;digo</li>
+		<li>Optimizaci&oacute;n</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Proyecto</h2>
+	  <h3>Compilador de Decaf</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Grupos de 2 personas:
+	      <ul>
+		<li>Repita despu&eacute;s de mi: <b class="red">2 personas.</b></li>
+		<li>Dif&iacute;cil cambiar de pareja, escojan bien.</li>
+		<li>Es un proyecto grande, la recomendaci&oacute;n es trabajar en equipo.</li>
+		<li>Comiencen a trabajar con tiempo.</li>
+		<li><b>Cada entrega debe hacerse por el GES.</b></li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+
+      <slide class="logoslide dark nobackground"></slide>
+      <slide class="backdrop"></slide>
+
+    </slides>
+    <!--[if IE]>
+      <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+      <script>CFInstall.check({mode: 'overlay'});</script>
+    <![endif]-->
+  </body>
+</html>
