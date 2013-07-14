@@ -36,28 +36,346 @@
       
       <!-- Content starts HERE! -->
       
+      <slide>
+	<hgroup>
+	  <h2>Autómaton Finito</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Un autómaton finito es equivalente a una Expresión Regular.</li>
+	    <li>Con la ventaja de ser implementable por una computadora.</li>
+	    <li>Un autómaton finito equivalente a una expresión regular reconoce el mismo lenguaje.</li>
+	    <li>En general, un autómaton finito reconoce un lenguaje regular.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Autómaton Finito</h2>
+	  <h3>DFA vs NDFA</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>DFA sólo puede tomar una ruta dado un estado y un símbolo.</li>
+	    <li>NDFA puede escoger entre varias rutas.</li><br/>
+
+	    <li>DFA suelen ser más rápidos en su ejecución al no necesitar decisiones.</li>
+	    <li>NDFA suelen ser más pequeños (en cantidad de estados).</li><br/>
+	    <li>Por lo tanto, 'preferimos' trabajar con DFA.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Convirtiendo un NDFA a DFA</h2>
+	  <h3>Autómata finito</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Cerradura &epsilon;</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>La cerradura de un estado <b>s</b> es el conjunto de estados alcanzables desde <b>s</b> a través de transiciones &epsilon;, incluyendo <b>s</b>.</li>
+	  </ul>
+	  <img class="flexbox vcenter" src="images/closure.png">
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>Clausura de A ?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-1.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>Closure(A) = {A, B, C, D, H, I}</b></p>
+	    <p><b>Closure(F) = {A, B, C, D, F, G, H, I}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Arista DFA</h2>
+	</hgroup>
+	<article>
+	  <p>Conjunto de estados del NFA alcanzables desde un subset de estados <b>d</b> consumiendo el símbolo <b>c</b>.</p>
+	  <img class="flexbox vcenter" src="images/dfa-edge.png">
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A, B, C, D, H, I}, 1) ?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-2.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>DFAedge({A,B,C,D,H,I}, 1) = {A, B, C, D, E, G, H, I, J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Estados finales DFA</h2>
+	</hgroup>
+	<article>
+	  <p>Conjunto de estados del DFA que contengan algún estado final del NDFA.</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Algoritmo</h2>
+	</hgroup>
+	<article>
+	  <p>1. Calcular la clausura del estado inicial del NDFA.</p>
+	  <p>2. Calcular aristaDFA del estado inicial del DFA con cada símbolo del alfabeto.</p>
+	  <p>3. Calcular aristaDFA para cada nuevo estado del DFA con cada símbolo del alfabeto.</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Algoritmo</h2>
+	</hgroup>
+	<article>
+	  <p><b>1. Calcular la clausura del estado inicial del NDFA.</b></p>
+	  <p>2. Calcular aristaDFA del estado inicial del DFA con cada símbolo del alfabeto.</p>
+	  <p>3. Calcular aristaDFA para cada nuevo estado del DFA con cada símbolo del alfabeto.</p>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>Clausura de A?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-3.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>Closure(A) = {A, B, C, D, H, I}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Algoritmo</h2>
+	</hgroup>
+	<article>
+	  <p>1. Calcular la clausura del estado inicial del NDFA.</p>
+	  <p><b>2. Calcular aristaDFA del estado inicial del DFA con cada símbolo del alfabeto.</b></p>
+	  <p>3. Calcular aristaDFA para cada nuevo estado del DFA con cada símbolo del alfabeto.</p>
+	</article>
+      </slide>
       
       
       <slide>
 	<hgroup>
-	  <h2>Slide with Bullets</h2>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,H,I}, 0)?</h3>
 	</hgroup>
 	<article>
-	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
-	  </ul>
+	  <img src="images/ndfa-dfa-4.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,H,I}, 0) = {F,G,H,I,A,B,C,D}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,H,I}, 0)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-5.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,H,I}, 0) = {F,G,H,I,A,B,C,D}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,H,I}, 1)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-6.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,H,I}, 1) = {A,B,C,D,E,G,H,I,J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,H,I}, 1)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-7.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,H,I}, 1) = {A,B,C,D,E,G,H,I,J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,E,G,H,I,J}, 0)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-7.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,E,G,H,I,J}, 0) = {F,G,H,I,A,B,C,D}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,E,G,H,I,J}, 0)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-8.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,E,G,H,I,J}, 0) = {F,G,H,I,A,B,C,D}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,E,G,H,I,J}, 1)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-8.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,E,G,H,I,J}, 1) = {A,B,C,D,E,G,H,I,J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({A,B,C,D,E,G,H,I,J}, 1)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-9.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({A,B,C,D,E,G,H,I,J}, 1) = {A,B,C,D,E,G,H,I,J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({F,G,H,I,A,B,C,D}, 1)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-9.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({F,G,H,I,A,B,C,D}, 1) = {A,B,C,D,E,G,H,I,J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({F,G,H,I,A,B,C,D}, 1)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-10.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({F,G,H,I,A,B,C,D}, 1) = {A,B,C,D,E,G,H,I,J}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({F,G,H,I,A,B,C,D}, 0)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-10.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({F,G,H,I,A,B,C,D}, 0) = {F,G,H,I,A,B,C,D}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	  <h3>aristaDFA({F,G,H,I,A,B,C,D}, 0)?</h3>
+	</hgroup>
+	<article>
+	  <img src="images/ndfa-dfa-11.png" class="reflect" alt="NDFA" title="NDFA">
+	</article>
+	<aside class="note">
+	  <section>
+	    <p><b>aristaDFA({F,G,H,I,A,B,C,D}, 0) = {F,G,H,I,A,B,C,D}</b></p>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo</h2>
+	</hgroup>
+	<article class="flexbox vcenter">
+	  <img src="images/ndfa-dfa-12.png" class="reflect" alt="Description" title="Description">
 	</article>
       </slide>
-
       
-
       <slide class="logoslide dark nobackground">
       </slide>
 
