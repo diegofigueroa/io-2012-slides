@@ -40,24 +40,221 @@
       
       <slide>
 	<hgroup>
-	  <h2>Slide with Bullets</h2>
+	  <h2>Análsis Sintáctico</h2>
 	</hgroup>
 	<article>
 	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
+	    <li>Segunda fase de un compilador</li>
+	    <li>Comúnmente le llamamos <b>parser</b>.</li>
+	    <li>Encargado de verificar la estructura del programa.</li>
+	    <li>Entrada: Stream de tokens.</li>
+	    <li>Salida: Árbol de sintaxis.</li>
+	  </ul>
+	  <img src="images/parser.png">
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Análsis Sintáctico</h2>
+	</hgroup>
+	<article>
+	  <p>La estructura de un programa generalmente tiene un comportamiento recursivo.</p>
+	  <pre class="prettyprint" data-lang="java">
+	  pubic void foo(int m, int n, int j){
+	    for(i = 1; i <= n; i++){
+	      if(i == j){
+                   j = j + 1;
+                   m = i*j;
+	      }
+	      for(k = i; k <= n; k++){
+                   m = m + k;
+	      }
+	    }
+	  }
+	  </pre>
+	</article>
+	<p>Escapa de las capacidades de un lenguaje regular.</p>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Análisis Sintáctico</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto (CFG)</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Permiten una definición precisa, fácil de entender.</li>
+	    <li>Proveen estructura a un lenguaje, lo cual es útil en el proceso de traducción.</li>
+	    <li>Permiten actualizar la implementación del compilador conforme al lenguaje va evolucionando.</li>
 	  </ul>
 	</article>
       </slide>
-
       
-
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Conjunto de símbolos terminales T.</li>
+	    <li>Conjunto de símbolos no terminales N.</li>
+	    <li>Un símbolo de inicio S (S pertenece a N).</li>
+	    <li>Conjunto de producciones:</li>
+	    <li>X -> &alpha;Y&beta;</li><br/>
+	    <li>Las producciones determinan la forma en que los terminales y no terminales se combinan para formar strings.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>S -> ( S )</li>
+	    <li>S -> &epsilon;</li>
+	  </ul>
+	</article>
+	<aside class="note">
+	  <section>
+	    <ul>
+	      <li>N = {S}</li>
+	      <li>T = {(, )}</li>
+	    </ul>
+	  </section>
+	</aside>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Producciones</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Un sólo símbolo no terminal del lado izquierdo (LHS).</li>
+	    <li>Una combinación de terminales y no terminales del lado derecho (RHS).</li><br/>
+	    <li>Puede interpretarse como una regla de asignación.</li></br>
+	    
+	    <li>Los terminales equivalen a los tokens definidos por el análisis léxico.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <p>¿Qué lenguaje define esta CFG ?</p>
+	  <ul class="build">
+	    <li>S -> a S a</li>
+	    <li>S -> aa</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>E -> E OP E</li>
+	    <li>E -> ( E )</li>
+	    <li>E -> - E</li>
+	    <li>E -> number</li>
+	    <li>OP -> + | *</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Árbol de parseo</h2>
+	  <h3>Análisis Sintáctico</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Árbol de parseo</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Representación gráfica de las derivaciones de una gramática.</li>
+	    <li>Los nodos intermedios son no terminales.</li>
+	    <li>Las hojas son terminales.</li>
+	    <li>Puede obtenerse derivando desde la izquierda (left-most-derivation) o desde la derecha (right-most-derivation).</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Árbol de parseo</h2>
+	</hgroup>
+	<article class="flexbox vcenter">
+	  <img src="images/parse-tree.png" class="reflect" alt="Arbol de parseo" title="Arbol de parseo" height="500px">
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Árbol de parseo</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Una gramática que produce más de un arbol de parseo para un string es <b>ambigua</b>.</li>
+	    <li>Usualmente preferimos trabajar con gramáticas no ambiguas, de forma que no se deba escojer qué árbol de parseo utilizar.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="fill nobackground" style="background-image: url(images/parse-tree-2.png)">
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Ambiguedad</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Para eliminar la ambieguedad de una gramática, podemos reescribirla.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="fill nobackground" style="background-image: url(images/parse-tree-3.png)">
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Gramáticas libres de contexto</h2>
+	  <h3>Ambiguedad</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Dependiendo del lenguaje, es probable que obtengamos una gramática bastante más compleja al intentar eliminar la ambiguedad con reescrituras.</li>
+	    <li>Es por eso que las herramientas de generación de parsers, usualmente permiten definir ciertas reglas de desambiguación, como presendecia y/o asociatividad.</li>
+	  </ul>
+	</article>
+      </slide>
+      
       <slide class="logoslide dark nobackground">
       </slide>
 
