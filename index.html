@@ -40,24 +40,582 @@
       
       <slide>
 	<hgroup>
-	  <h2>Slide with Bullets</h2>
+	  <h2>Top-down parsing</h2>
 	</hgroup>
 	<article>
-	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
+	  <ul class="build">
+	    <li>Un parser top-down, construye el arbol de parseo desde la raíz (desde arriba).</li>
+	    <li>Cada nodo del arbol se obtiene haciendo derivaciones desde la izquierda (left-most derivation).</li><br/>
+	    
+	    <li>Dos implementaciones de este tipo:
 	      <ul>
-		<li>Subtitle capitalization is title case</li>
+		<li>Recursive Descent</li>
+		<li>Predictive Parser</li>
 	      </ul>
 	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
 	  </ul>
 	</article>
       </slide>
-
       
-
+       <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Top-down parsing</h2>
+	  <h3>Recursive Descent</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>El arbol de parseo a generar inicia en el símbolo inicial de la gramática.</li>
+	    <li>Intentamos obtener una derivacion (left-fost derivation) utilizando la primera producción.</li><br/>
+	    
+	    <li>Después de n derivaciones, al obtener un terminal comparamos con el string de entrada:
+	      <ul>
+		<li>Si hacen match, avanzamos una posición.</li>
+		<li>Si son distintos, intentamos con otra producción para el no terminal actual.</li>
+	      </ul>
+	    </li><br/>
+	    
+	    <li>Si en algún momento nos quedamos sin opciones, y el string generado no hace match con el input, el input es inválido.</li><br/>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  Gramática:
+	  <ul>
+	    <li>E -> T | T + E</li>
+	    <li>T -> int | int * T | ( E )</li>
+	  </ul>
+	  Token stream:
+	  <ul>
+	    <li>( int )</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li><b class="red">E</b> -> T | T + E</li>
+	      <li>T -> int | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  <b>E</b>
+	  </pre>
+	</article>
+      </slide>
+      
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li><b class="red">E -> T</b> | T + E</li>
+	      <li>T -> int | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li><b class="red">T -> int</b> | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                                  |
+		                                 int
+	  </pre>
+	  <ul class="red build">
+	    <li>¿ <b>int</b> hace match con <b>(</b> ?</li>
+	    <li>¡NO!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li>T -> int | <b class="red">int * T</b> | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+	  </pre>
+	  <ul class="red build">
+	    <li>¿ int hace match con ( ?</li>
+	    <li>¡NO!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li>T -> int | <b class="red">int * T</b> | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                             int  *   T 
+	  </pre>
+	  <ul class="red build">
+	    <li>¿ <b>int</b> hace match con <b>(</b> ?</li>
+	    <li>¡NO!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li>T -> int | int * T | <b class="red">( E )</b></li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                              (   E   ) 
+	  </pre>
+	  <ul class="build">
+	    <li class="red">¿ <b>(</b> hace match con <b>(</b> ?</li>
+	    <li class="green">¡SI!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li>T -> int | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">&nbsp;&nbsp;&nbsp;^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                              (   E   ) 
+	  </pre>
+	  <ul class="build">
+	    <li class="red">¿ <b>(</b> hace match con <b>(</b> ?</li>
+	    <li class="green">¡SI!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li><b class="red">E -> T</b> | T + E</li>
+	      <li>T -> int | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">&nbsp;&nbsp;&nbsp;^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                              (   E   ) 
+		                                  |
+		                                  T
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li><b class="red">T -> int</b> | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">&nbsp;&nbsp;&nbsp;^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                              (   E   ) 
+		                                  |
+		                                  T
+		                                  |
+		                                 int
+	  </pre>
+	  <ul class="build">
+	    <li class="red">¿ <b>int</b> hace match con <b>int</b> ?</li>
+	    <li class="green">¡SI!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li>T -> int | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                              (   E   ) 
+		                                  |
+		                                  T
+		                                  |
+		                                 int
+	  </pre>
+	  <ul class="build">
+	    <li class="red">¿ <b>)</b> hace match con <b>)</b> ?</li>
+	    <li class="green">¡SI!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <div class="columns-2">
+	    <p>Gramática:</p>
+	    <ul>
+	      <li>E -> T | T + E</li>
+	      <li>T -> int | int * T | ( E )</li>
+	    </ul>
+	    
+	    <p>Input:</p>
+	    <ul>
+	      <li>( int ) </li>
+	      <li><b class="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^</b></li>
+	    </ul>
+	  </div>
+	  <pre class="prettyprint">
+		                                  E
+		                                  |
+		                                  T
+		                               /  |  \
+		                              (   E   ) 
+		                                  |
+		                                  T
+		                                  |
+		                                 int
+	  </pre>
+	  <ul class="build">
+	    <li class="blue">Consumimos todo el input, y el arbol está completo.</li>
+	    <li class="green">¡String aceptado!</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	  <h3>Nota</h3>
+	</hgroup>
+	<article class="smaller">
+	  <div>A la acción de deshacer una o más derivaciones y regresar sobre el input se le llama <b>backtracking</b>.</div>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Top-down parsing</h2>
+	  <h3>Recursive Descent (Implementación)</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	</hgroup>
+	<article>
+	  <p>Implementado mediante una serie de funciones:</p>
+	  <ul class="build">
+	    <li>boolean term(Token t): Devuelve verdadero si el token actual del input es igual a t, además avanza el puntero.</li>
+	    <li>Para cada producción n de S:
+	      <ul>
+		<li>boolean Sn(){...}</li>
+	      </ul>
+	    </li>
+	    <li>boolean S(){}: Devuelve verdadero si al menos una de Si...Sn devuelve verdadero.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>E -> T
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">boolean E1(){return T();}</pre>
+		</li>
+	      </ul>
+	    </li>
+	    <li>E -> T + E
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">boolean E2(){return T() && term(PLUS) && E();}</pre>
+		</li>
+	      </ul>
+	    </li>
+	    <li>
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">
+boolean E(){
+  Token prev = next;
+  boolean success = E1();
+  if(!success){
+    next = prev;
+    success = E2();
+  }
+  return success;
+}</pre>
+		</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <ul class="build">
+	    <li>T -> int
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">boolean T1(){return term(INT);}</pre>
+		</li>
+	      </ul>
+	    </li>
+	    <li>T -> int * T
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">boolean T2(){return term(INT) && term(TIMES) && T();}</pre>
+		</li>
+	      </ul>
+	    </li>
+	    <li>T -> ( E )
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">boolean T3(){return term(OPEN) && E() && term(CLOSE);}</pre>
+		</li>
+	      </ul>
+	    </li>
+	    <li>
+	      <ul>
+		<li>
+		  <pre class="prettyprint" data-lang="java">
+boolean T(){
+  Token prev = next;
+  boolean success = T1();
+  if(!success){
+    next = prev;
+    success = T2();
+    if(!success){
+      next = prev;
+      success = T3();
+    }
+  }
+  return success;
+}</pre>
+		</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent</h2>
+	  <h3>Conclusiones</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Muy fácil de implementar.</li>
+	    <li>No necesitamos herramientas automáticas que lo generen, podemos hacerlo manualmente.</li>
+	    <li>Puede volverse lento, en función de cuánto backtracking necesite hacer.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Recursive Descent</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>S -> Sa</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      
       <slide class="logoslide dark nobackground">
       </slide>
 
