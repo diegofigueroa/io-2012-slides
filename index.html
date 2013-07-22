@@ -487,13 +487,13 @@
 	<article>
 	  <p>Implementado mediante una serie de funciones:</p>
 	  <ul class="build">
-	    <li>boolean term(Token t): Devuelve verdadero si el token actual del input es igual a t, además avanza el puntero.</li>
-	    <li>Para cada producción n de S:
+	    <li><b>boolean term(Token t)</b>: Devuelve verdadero si el token actual del input es igual a t, además avanza el puntero.</li><br/>
+	    <li>Para cada producción <b>n</b> de <b>S</b>:
 	      <ul>
-		<li>boolean Sn(){...}</li>
+		<li><b>boolean Sn(){...}</b></li>
 	      </ul>
-	    </li>
-	    <li>boolean S(){}: Devuelve verdadero si al menos una de Si...Sn devuelve verdadero.</li>
+	    </li><br/>
+	    <li><b>boolean S(){}</b>: Devuelve verdadero si al menos una de <b>Si</b>...<b>Sn</b> devuelve verdadero.</li>
 	  </ul>
 	</article>
       </slide>
@@ -611,10 +611,205 @@ boolean T(){
 	<article>
 	  <ul class="build">
 	    <li>S -> Sa</li>
+	    <li>
+              <pre class="prettyprint" data-lang="java">
+boolean S1(){
+  return S() && term(A);
+}</pre>
+	    </li>
+	    <li>
+              <pre class="prettyprint" data-lang="java">
+boolean S(){
+  return S1();
+}</pre>
+            </li>
+            <li class="red"><b> ¿Ciclo infinito?</b></li>
 	  </ul>
 	</article>
       </slide>
       
+      <slide class="segue dark nobackground">
+        <aside class="gdbar"><img src="images/ug_128.png"></aside>
+        <hgroup class="auto-fadein">
+          <h2>Recursión Izquierda</h2>
+        </hgroup>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Recursión Izquierda</h2>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>La gramática anterior es un ejemplo de una gramática con recursión izquierda.</li><br/>
+            <li>Una gramática con recursión izquierda es aquella que incluye alguna regla S tal que:</li>
+            <li><pre class="prettyprint">S ->+ S &alpha;</pre></li>
+            <br/>
+            <li>Un parser recursive descent <b class="red">no</b> puede parsear una gramática con recursión izquierda.</li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Recursión Izquierda</h2>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li><pre class="prettyprint">S -> S &alpha; | &beta;</pre></li>
+            <li>¿Qué lenguaje acepta esta gramática?</li>
+            <li>Todos los strings que inician con <b class="blue">&beta;</b> y terminan con una serie de <b class="blue">&alpha;</b>.</li><br/>
+            <br/>
+            <li class="red"><b>¿Qué pasa si reescribimos la gramática usando recursión derecha?</b></li>
+            <li><pre>S  -> &beta; S'
+S' -> &alpha; S' | &epsilon;</pre></li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Recursión Izquierda</h2>
+          <h3>Reescritura a Recursión Derecha</h3>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li><pre class="prettyprint">S -> S &alpha;1 | ... | S &alpha;n| &beta;1 | ... | &beta;m</pre></li>
+            <br/>
+            <li class="blue">Se puede reescribir como:</li>
+            <li><pre>S  -> &beta;1 S' | ... | &beta;m S'
+S' -> &alpha;1 S' | ... | &alpha;n S' | &epsilon;</pre></li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Recursive Descent</h2>
+          <h3>Conclusiones</h3>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Muy fácil de implementar.</li>
+            <li>No necesitamos herramientas automáticas que lo generen, podemos hacerlo manualmente.</li>
+            <li>Puede volverse lento, en función de cuánto backtracking necesite hacer.</li><br/>
+            <li class="red"><b>Debemos eliminar la recursión izquierda antes del parseo!</b></li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+        <aside class="gdbar"><img src="images/ug_128.png"></aside>
+        <hgroup class="auto-fadein">
+          <h2>Top-down parsing</h2>
+          <h3>Predictive parser</h3>
+        </hgroup>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parser</h2>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Similar a un parser recursive descent, pero con la capacidad de 'predecir' qué producción utilizar.</li>
+            <li class="green">Esto significa que no necesita backtracking.</li>
+            <li class="blue">Pero necesita <b>lookahead</b>.</li>
+            <li><b>Lookahead</b>: Capacidad de ver los siguientes k tokens del token actual.</li><br/>
+            <li class="red">Sólo puede aceptar un conjunto restringido de gramáticas.</li>
+            <li>LL(k)
+              <ul>
+                <li>L   -> Left to right scanning (Lee el input de izquierda a derecha)</li>
+                <li>L   -> Left-most derivation (Deriva únicamente el NT más a la izq.)</li>
+                <li>(k) -> Cantidad de tokens de lookahead.</li>
+                <li>Comúnmente, k = 1.</li>
+              </ul>
+            </li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parser vs Recusive Descent</h2>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Recursive Descent
+              <ul>
+                <li>En cada paso debemos elegir la producción a utilizar.</li>
+                <li>En caso de error, deshacemos la derivación (backtracking) e intentamos con la siguiente opción.</li>
+              </ul>
+            </li>
+            <li>LL(1)
+              <ul>
+                <li>No es necesario escoger, en cada paso sólo tenemos una opción.</li>
+                <li>Gracias al lookahead, que nos debe permitir determinar la producción a utilizar.</li>
+              </ul>
+            </li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parser</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <div class="columns-2">
+            <p>Gramática:</p>
+            <ul>
+              <li>E -> T + E | T</li>
+              <li>T -> int | int * T | ( E )</li>
+              <br/>
+            </ul>
+            <p>Input:</p>
+            <ul>
+              <li>( int ) </li>
+              <li>k=1</li>
+            </ul>
+          </div>
+          <div>Queremos hacer una derivacion de <b class="blue">T</b>, sabemos que el próximo token es <b class="blue">int</b> (k = 1), cuál producción tomamos?</div><br/>
+          <pre>T -> <b class="red">int</b> | <b class="red">int</b> * T | ( E )</pre>
+          <div class="red">¡Hay 2 producciones para T que comienzan con el mismo símbolo!</div>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Factorización Izquierda</h2>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Si tenemos 2 o más producciones que comparten un prefijo en el RHS, podemos reescribir esas producciones para 'factorizar' ese prefijo.</li>
+            <li><pre class="prettyprint">A -> &alpha; &beta;1 | &alpha; &beta;2</pre></li><br/>
+            <li>Es equivalente a:</li>
+            <li><pre>A -> &alpha; A'
+A' -> &beta;1 | &beta;2
+</pre></li><br/>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Factorización Izquierda</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+            <pre class="prettyprint">E -> T + E | T
+T -> int | int * T | ( E )
+</pre>
+          <p>Es equivalente a:</p>
+          <pre>E -> T E'
+E' -> + E | &epsilon;
+
+T -> int | ( E )
+T' -> * T | &epsilon;
+</pre>
+        </article>
+      </slide>
       
       <slide class="logoslide dark nobackground">
       </slide>
