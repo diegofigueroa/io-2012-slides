@@ -72,7 +72,7 @@
 	<article>
 	  <ul class="build">
 	    <li>El arbol de parseo a generar inicia en el símbolo inicial de la gramática.</li>
-	    <li>Intentamos obtener una derivacion (left-fost derivation) utilizando la primera producción.</li><br/>
+	    <li>Intentamos obtener una derivacion (left-most derivation) utilizando la primera producción.</li><br/>
 	    
 	    <li>Después de n derivaciones, al obtener un terminal comparamos con el string de entrada:
 	      <ul>
@@ -925,6 +925,37 @@ T -> (E) | int Y                                            Y -> * T | &epsilon;
           <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
 T -> (E) | int Y                                            Y -> * T | &epsilon;
 </pre>
+        <table>
+            <tr>
+              <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+            </tr>
+            <tr>
+              <td>E</td><td>TX</td><td></td><td></td><td>TX</td><td></td><td></td>
+            </tr>
+            <tr>
+              <td>X</td><td></td><td></td><td>+ E</td><td></td><td class="highlight">&epsilon;</td><td>&epsilon;</td>
+            </tr>
+            <tr>
+              <td>T</td><td>int Y</td><td></td><td></td><td>(E)</td><td></td><td></td>
+            </tr>
+            <tr>
+              <td>Y</td><td></td><td>* T</td><td>&epsilon;</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+            </tr>
+          </table>
+          <br/>
+          <div style="font-size:0.8em">Si queremos hacer una derivación para <b>X</b>, y el siguiente token es <b>)</b>, debemos usar: <b>X -> &epsilon;</b></div>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
 	<table>
 	    <tr>
 	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
@@ -945,6 +976,99 @@ T -> (E) | int Y                                            Y -> * T | &epsilon;
 	  <br/>
 	  <div style="font-size:0.8em">Si queremos hacer una derivación para <b>X</b>, y el siguiente token es <b>*</b>: <b class="red">ERROR.</b></div>
         </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Parsing table</h3>
+        </hgroup>
+        <article class="smaller">
+          <ul class="build">
+            <li>Un parser predictivo utiliza la tabla de parseo para construir el arbol de parseo.</li>
+            <li>Sigue un flujo similar al parser Recursive Descent:
+              <ul>
+                <li>Busca el no terminal más a la izquierda, 'N'.</li>
+                <li>Revisa el siguiente token del input, 'a'.</li>
+                <li class="blue">Busca la entrada en la tabla en la posición [N, a].</li>
+                <li>Si existe una entrada, utiliza esa derivación para N.</li>
+                <li>Si no existe, reporta error inmediatamente (no hay backtracking).</li>
+              </ul>
+            </li>
+            <li>Utiliza un stack para guardar:
+              <ul>
+                <li>No terminales pendientes de derivar.</li>
+                <li>Terminales a comparar contra el input.</li>
+                <li>El tope del stack siempre contiene el siguiente símbolo (no-terminal o terminal) a trabajar.</li>
+              </ul>
+            </li>
+            <li>Acepta un string cuando termina de recorrer el input, y no hay más símbolos en el stack.</li>
+          </ul>
+        </article>
+      </slide>
+      
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Parsing table</h3>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Queremos construir una tabla de parseo tal que para un no terminal <b class="blue">A</b>, con una producción de la forma <b class="blue">A -> &alpha;</b>, y un token <b class="blue">t</b> del alfabeto:
+            </li>
+            <li><pre>T[A, t] = &alpha;</pre></li>
+            <li>Para esto utilziaremos las funciones:
+              <ul>
+                <li>First</li>
+                <li>Follow</li>
+              </ul>
+            </li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+        <aside class="gdbar"><img src="images/ug_128.png"></aside>
+        <hgroup class="auto-fadein">
+          <h2>First</h2>
+          <h3>Predictive Parser</h3>
+        </hgroup>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>First</h2>
+          <h3>Predictive parsing</h3>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Definición:</li>
+            <li><pre class="prettyprint">First(&alpha;) = { t | &alpha; -> tX } U { &epsilon; | &alpha; -> &epsilon; }</pre></li>
+          </ul>
+          <ul class="build">
+            <li>Reglas:</li>
+            <li><pre class="prettyprint">First(t) = { t }</pre></li>
+            <li><pre class="prettyprint">&epsilon; &isin; First(X)
+ si: X -> &epsilon;
+ ó:  X -> A1...An y &epsilon; &isin; First(Ai) para n = 1..n
+</pre></li>
+            <li><pre class="prettyprint">First(&alpha;) &sube; First(X)
+ si: X -> A1..An &alpha;
+ y:  E &isin; First(Ai) para i = 1..n
+</pre></li>
+          </ul>
+        </article>
+      </slide>
+      
+      
+      
+      <slide class="segue dark nobackground">
+        <aside class="gdbar"><img src="images/ug_128.png"></aside>
+        <hgroup class="auto-fadein">
+          <h2>Follow</h2>
+          <h3>Predictive Parser</h3>
+        </hgroup>
       </slide>
       
       <slide class="logoslide dark nobackground">
