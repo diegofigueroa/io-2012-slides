@@ -811,6 +811,142 @@ T' -> * T | &epsilon;
         </article>
       </slide>
       
+      <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Un parser predictivo no soporta gramáticas con producciones factorizables por la izquierda.</li>
+            <li>Debemos factorizar primero.</li>
+            <li>Un parser predictivo, en vez de funcionar en base a funciones recursivas, utiliza una tabla de parseo.</li>
+            <li>Esta tabla es un 'mapa' que le dice cómo moverse dado el no terminal del LHS de una producción y un símbolo del alfabeto.</li>
+          </ul>
+        </article>
+      </slide>
+      
+       <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td>TX</td><td></td><td></td><td>TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td>+ E</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td>int Y</td><td></td><td></td><td>(E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td>* T</td><td>&epsilon;</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	  </table>
+        </article>
+      </slide>
+      
+       <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td>TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td>+ E</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td>int Y</td><td></td><td></td><td>(E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td>* T</td><td>&epsilon;</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <div style="font-size:0.8em">Si queremos hacer una derivación para <b>E</b>, y el siguiente token es <b>int</b>, debemos usar: <b>E -> TX</b></div>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td>TX</td><td></td><td></td><td>TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight">+ E</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td>int Y</td><td></td><td></td><td>(E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td>* T</td><td>&epsilon;</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <div style="font-size:0.8em">Si queremos hacer una derivación para <b>X</b>, y el siguiente token es <b>+</b>, debemos usar: <b>X -> + E</b></div>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Predictive parsing</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td>TX</td><td></td><td></td><td>TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td class="highlight"></td><td>+ E</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td>int Y</td><td></td><td></td><td>(E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td>* T</td><td>&epsilon;</td><td></td><td>&epsilon;</td><td>&epsilon;</td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <div style="font-size:0.8em">Si queremos hacer una derivación para <b>X</b>, y el siguiente token es <b>*</b>: <b class="red">ERROR.</b></div>
+        </article>
+      </slide>
+      
       <slide class="logoslide dark nobackground">
       </slide>
 
