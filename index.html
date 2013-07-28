@@ -1055,13 +1055,47 @@ T -> (E) | int Y                                            Y -> * T | &epsilon;
 </pre></li>
             <li><pre class="prettyprint">First(&alpha;) &sube; First(X)
  si: X -> A1..An &alpha;
- y:  E &isin; First(Ai) para i = 1..n
+ y:  &epsilon; &isin; First(Ai) para i = 1..n
 </pre></li>
           </ul>
         </article>
       </slide>
       
-      
+      <slide>
+        <hgroup>
+          <h2>First</h2>
+          <h3>Predictive parsing</h3>
+        </hgroup>
+        <article>
+	  <pre class="prettyprint">E -> TX                      X -> + E | &epsilon;
+T -> int Y | (E)             Y -> * T | &epsilon;
+</pre>
+	  <div class="columns-2">
+	    <ul class="build">
+	      <li class="red">First(int) = ?</li>
+	      <li class="blue">First(int) = { int }</li>
+	      
+	      <li class="red">First(+) = ?</li>
+	      <li class="blue">First(+) = { + }</li>
+	      
+	      <li class="red">First(*) = ?</li>
+	      <li class="blue">First(*) = { * }</li>
+	      
+	      <li class="blue">First( '(' ) = { ( }</li>
+	      <li class="blue">First( ')' ) = { ) }</li>
+	    </ul>
+	    <ul class="build">
+	      <li class="red">First(E) = ?</li>
+	      <li class="blue">First(E) &supe; First(T) = { int, ( }</li>
+	      
+	      <li class="red">First(X) = ?</li>
+	      <li class="blue">First(X) = { +, &epsilon; }</li>
+	      
+	      <li class="red">First(Y) = ?</li>
+	      <li class="blue">First(Y) = { *, &epsilon; }</li>
+	    </ul>
+        </article>
+      </slide>
       
       <slide class="segue dark nobackground">
         <aside class="gdbar"><img src="images/ug_128.png"></aside>
@@ -1069,6 +1103,536 @@ T -> (E) | int Y                                            Y -> * T | &epsilon;
           <h2>Follow</h2>
           <h3>Predictive Parser</h3>
         </hgroup>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Follow</h2>
+          <h3>Predictive parsing</h3>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Definición:</li>
+            <li><pre class="prettyprint">Follow(<b class="blue">X</b>) = { t | S -> &alpha;Xt&beta; }</pre></li>
+          </ul>
+          <ul class="build">
+            <li>Reglas:</li>
+            <li><pre class="prettyprint">Si <b class="blue">S</b> es el símbolo inicial, entonces <b class="blue">$</b> &isin; Follow(S)</pre></li>
+            <li><pre class="prettyprint">Si existe una producción
+ A -> &alpha;B&beta;
+ entonces First(&beta;) - { &epsilon; } &sube; Follow(B)
+</pre></li>
+            <li><pre class="prettyprint">Si existe una producción
+ A -> &alpha;B ó A -> &alpha;B&beta; donde &epsilon; &isin; First(&beta;)
+ entonces Follow(A) &sub; Follow(B)
+</pre></li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>First</h2>
+          <h3>Predictive parsing</h3>
+        </hgroup>
+        <article>
+	  <pre class="prettyprint">E -> TX                      X -> + E | &epsilon;
+T -> int Y | ( E )           Y -> * T | &epsilon;
+</pre>
+	  <div class="columns-2">
+	    <ul class="build">
+	      <li class="red">Follow(E) = ?</li>
+	      <li class="blue">Follow(E) &sube; Follow(X) = { $, ) }</li>
+	    
+	      <li class="red">Follow(X) = ?</li>
+	      <li class="blue">Follow(X) &sube; Follow(E) = { $, ) }</li>
+	      
+	      <li class="red">Follow(T) = ?</li>
+	      <li class="blue">Follow(T) = First(X) - { &epsilon; } U Follow(E) = { +, $, ) }</li>
+	      
+	      <li class="red">Follow(Y) = ?</li>
+	      <li class="blue">Follow(Y) = Follow(T) = { +, $, ) }</li>
+	    </ul>
+	    
+	    <ul class="build">
+	      <li class="red">Follow( '(' ) = ?</li>
+	      <li class="blue">Follow( '(' ) &supe; First(E) = { int, ( }</li>
+	    
+	      <li class="red">Follow( ')' ) = ?</li>
+	      <li class="blue">Follow( ')' ) &sube; Follow(T) = { +, $, ) }</li>
+	      
+	      <li class="red">Follow('+') = ?</li>
+	      <li class="blue">Follow('+') = First(E) - { &epsilon; } = { int, ( }</li>
+	      
+	      <li class="red">Follow('*') = ?</li>
+	      <li class="blue">Follow('*') = First(T) - { &epsilon; } = { int, ( }</li>
+	      
+	      <li class="red">Follow('int') = ?</li>
+	      <li class="blue">Follow('int') = First(Y) - { &epsilon; } U Follow(T) = { *, +, $, ) }</li>
+	    </ul>
+        </article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+        <aside class="gdbar"><img src="images/ug_128.png"></aside>
+        <hgroup class="auto-fadein">
+          <h2>Parsing Table construction</h2>
+          <h3>Predictive Parser</h3>
+        </hgroup>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Predictive parsing</h3>
+        </hgroup>
+        <article>
+          <ul class="build">
+            <li>Para cada producción A -> &alpha;:</li>
+            <li><pre class="prettyprint">
+            Para cada terminal t &isin; First(&alpha;):
+                T[A, t] = &alpha;
+                
+            Si &epsilon; &isin; First(&alpha;) entonces para cada b &isin; Follow(A):
+                T[A, b] = &alpha;
+</pre></li>
+          </ul>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> E -> TX,            First(TX) = First(T) = {int, )}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> E -> TX,            First(TX) = First(T) = {int, (}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> T -> (E),            First(() = { ( }</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td></td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> T -> (E),            First(() = { ( }</pre>
+        </article>
+      </slide>
+      
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td></td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> T -> int Y,            First(int) = {int}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> T -> int Y,            First(int) = {int}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> X -> + E,            First(+) = {+}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> X -> + E,            First(+) = {+}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> X -> &epsilon;,            Follow(X) = {$, )}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td class="highlight"> &epsilon;</td><td class="highlight"> &epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> X -> &epsilon;,            Follow(X) = {$, )}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td class="highlight"> &epsilon;</td><td class="highlight"> &epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> Y -> * T,            First(*) = {*}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td class="highlight"> &epsilon;</td><td class="highlight"> &epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td class="highlight"> * T</td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> Y -> * T,            First(*) = {*}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td class="highlight"> &epsilon;</td><td class="highlight"> &epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td class="highlight"> * T</td><td></td><td></td><td></td><td></td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> Y -> &epsilon;,            Follow(Y) = {+, $, )}</pre>
+        </article>
+      </slide>
+      
+      <slide>
+        <hgroup>
+          <h2>Parsing table</h2>
+          <h3>Ejemplo</h3>
+        </hgroup>
+        <article>
+          <pre class="prettyprint">E -> TX                                                     X -> + E | &epsilon;
+T -> (E) | int Y                                            Y -> * T | &epsilon;
+</pre>
+	<table>
+	    <tr>
+	      <th></th><th>int</th><th>*</th><th>+</th><th>(</th><th>)</th><th>$</th>
+	    </tr>
+	    <tr>
+	      <td>E</td><td class="highlight">TX</td><td></td><td></td><td class="highlight">TX</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>X</td><td></td><td></td><td class="highlight"> + E </td><td></td><td class="highlight"> &epsilon;</td><td class="highlight"> &epsilon;</td>
+	    </tr>
+	    <tr>
+	      <td>T</td><td class="highlight">int Y</td><td></td><td></td><td class="highlight"> (E)</td><td></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>Y</td><td></td><td class="highlight"> * T</td><td class="highlight"> &epsilon;</td><td></td><td class="highlight"> &epsilon;</td><td class="highlight"> &epsilon;</td>
+	    </tr>
+	  </table>
+	  <br/>
+	  <pre> Y -> &epsilon;,            Follow(Y) = {+, $, )}</pre>
+        </article>
       </slide>
       
       <slide class="logoslide dark nobackground">
