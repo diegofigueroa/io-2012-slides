@@ -40,24 +40,1269 @@
       
       <slide>
 	<hgroup>
-	  <h2>Slide with Bullets</h2>
+	  <h2>Bottom-Up parsing</h2>
 	</hgroup>
 	<article>
-	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
+	  <ul class="build">
+	    <li>También llamado shift-reduce parsing.</li>
+	    <li>Método de parseo más general (reconoce un conjunto más amplio de lenguajes) que top-down.</li>
+	    <li>Intenta construir un árbol de parseo comenzando desde las hojas del árbol, construyendo hasta llegar a la raíz.</li>
+	    <li>Se puede visualizar este proceso como <b>reducir</b> el string de entrada hasta obtener el símbolo inicial de la gramática.</li>
+	    <li>En cada paso de reducción se reemplaza un substring del input por el no terminal del lado izquierdo de alguna producción.</li>
+	    <li>Al finalizar este proceso, se obtiene un arbol por una derivación derecha.</li>
 	  </ul>
 	</article>
       </slide>
-
       
-
+      <slide>
+	<hgroup>
+	  <h2>Bottom-Up parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <pre>S -> aABe
+A -> Abc | b
+B -> d
+</pre>
+	  <ul class="build">
+	    <li>El string <b class="blue">abbcde</b> puede reducirse hasta <b>S</b> de la siguiente forma:
+	      <ul class="build">
+		<li>a<b class="red">b</b>bcde</li>
+		<li>a<b class="blue">A</b>bcde</li>
+		<li>a<b class="red">Abc</b>de</li>
+		<li>a<b class="blue">A</b>de</li>
+		<li>aA<b class="red">d</b>e</li>
+		<li>aA<b class="blue">B</b>e</li>
+		<li><b class="red">aABe</b></li>
+		<li><b class="blue">S</b></li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Bottom-Up parsing</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <pre>S -> aABe
+A -> Abc | b
+B -> d
+</pre>
+	  <div>Las reducciones anteriores reflejan la siguiente derivación derecha:</div><br/>
+	  <pre>S -> aABe -> aAde -> aAbcde -> abbcde</pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Bottom-Up parsing</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Utiliza derivación derecha.</li>
+	    <li>No necesita factorizar las gramáticas por la izquierda.</li>
+	    <li>Intenta construir un árbol de parseo comenzando desde las hojas del árbol, construyendo hasta llegar a la raíz.</li>
+	    <li>Se puede visualizar este proceso como <b>reducir</b> el string de entrada hasta obtener el símbolo inicial de la gramática.</li>
+	    <li>En cada paso de reducción se reemplaza un substring del input por el no terminal del lado izquierdo de alguna producción.</li>
+	    <li>Al finalizar este proceso, se obtiene un arbol por una derivación derecha.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Shift-Reduce Parsing</h2>
+	  <h3>Bottom-Up parsing</h3>
+	</hgroup>
+      </slide>
+      
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-1.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-2.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-3.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-4.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-5.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-6.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-7.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-8.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-9.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-10.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-11.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-12.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-13.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-14.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-15.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-16.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-17.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-18.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-19.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-20.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-21.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-22.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-23.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-24.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-25.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/shift-reduce-26.png)"></slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Shift-Reduce Parsing</h2>
+	  <h3>Acciones</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Shift: Insertar el token actual del input al tope del stack (push), mover el cursor al siguiente token.</li>
+	    <li>Reduce: El tope del stack debe hacer match con el RHS de alguna producción.
+	      <ul>
+		<li>Expulsar del stack dichos símbolos (pop).</li>
+		<li>Insertar al stack el no-terminal del LHS de la producción.</li>
+	      </ul>
+	    </li>
+	    <li>Accept: El stack debe contener únicamente el símbolo de inicio, debimos haber recorrido todo el input.</li>
+	    <li>Error: Recorrimos todo el input, pero el stack tiene más que el símbolo de inicio. Rechaza el input.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Shift-Reduce Parsing</h2>
+	  <h3>Funcionamiento</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>En teoría es muy simple, el stack y el token actual determinan la acción a tomar.</li>
+	    <li>En la práctica no resulta tan fácil:
+	      <ul>
+		<li>¿Qué sucede si el stack hace match con el RHS de varias producciones?</li>
+		<li>¿Es necesario reduchir cada vez que el stack contiene un RHS válido?</li>
+	      </ul>
+	    </li>
+	    <li>Accept: El stack debe contener únicamente el símbolo de inicio, debimos haber recorrido todo el input.</li>
+	    <li>Error: Recorrimos todo el input, pero el stack tiene más que el símbolo de inicio. Rechaza el input.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-1.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-2.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-3.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-4.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-5.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-6.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-7.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-8.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-9.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-10.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-11.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-12.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-13.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-14.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-15.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-16.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-17.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-18.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-19.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-20.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-21.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-22.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-23.png)"></slide>
+      <slide class="fill nobackground" style="background-image: url(images/conflicts-24.png)"></slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Shift-Reduce Parsing</h2>
+	  <h3>Conflictos</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Reduce/Reduce: Si existen varias producciones por las cuales reducir.</li>
+	    <li>Shift/Reduce: El parser no sabe si hacer una reducción o un shift, refleja una gramática ambigua.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>LR(k) Parsing</h2>
+	  <h3>Bottom-up parsing</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(k) parsing</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Implementación de Bottom-Up parsing.</li>
+	    <li>L: Left to right scanning.</li>
+	    <li>R: Rightmost derivation.</li>
+	    <li>k: Lookahead tokens..</li><br/>
+	    <li class="green">Muy poderoso, puede reconocer prácticamente cualquier lenguaje de programación descrito por una CFG.</li>
+	    <li class="green">Implementación genérica sin backtracking, altamente eficiente.</li>
+	    <li class="green">Capaz de reconocer más lenguajes que los parsers predictivos.</li><br/>
+	    <li class="red">Muy laborioso de implementar a mano.</li>
+	    <li class="green">Afortunadamente existen herramientas automatizadas.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>LR(0) Parsing</h2>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article>
+	  <p>Construido en base a:</p>
+	  <ul class="build">
+	    <li>Un DFA que dicta los estados en que se puede encontrar el parser.</li>
+	    <li>Una tabla de parseo, determina la acción a realizar en base al estado actual y el token actual del input.</li>
+	    <li>Un stack de estados.</li>
+	    <li>Un stack de símbolos.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     |  |                     (())$                  S -> X$   (1)
+ |  |                     |  |                                            X -> (X)  (2)
+ |  |                     |  |                                            X -> ( )  (3)
+ |s0|                     |  |                                          
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article>
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Buscar:</b> [states_stack.top, *current_token]
+<b>Ejecutar:</b> Shift/Reduce/Accept/Error segun indique la tabla.
+</pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article>
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Shift to sN:</b> symbol_stack.push(*current_token);
+states_stack.push(sN);
+current_token++;
+</pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article>
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Reduce n:</b> Expulsar de ambos stacks un símbolo por cada símbolo del RHS de la regla (n)
+Push del LHS de la regla (n) al stack de símbolos.
+Buscar [states_stack.top, symbol_stack.top].
+Push estado k al stack de símbolos (según goto k).
+</pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article>
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Accept:</b> Detener el parseo y aceptar el input string.</pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	</hgroup>
+	<article>
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Error:</b> Detener el parseo y rechazar el input string.</pre>
+	</article>
+      </slide>
+      
+      
+      
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     |  |                     (())$                  S -> X$   (1)
+ |  |                     |  |                                            X -> (X)  (2)
+ |  |                     |  |                                            X -> ( )  (3)
+ |s0|                     |  |                                          
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td class="highlight">shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     |  |                     (())$                  S -> X$   (1)
+ |  |                     |  |                                            X -> (X)  (2)
+ |  |                     |  |                                            X -> ( )  (3)
+ |s0|                     |  |                                          
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td class="highlight">shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      ())$                   S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s2|                     | |                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td class="highlight">shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      ())$                   S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s2|                     | |                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td class="highlight">shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      ))$                    S -> X$   (1)
+ |s2|                     | |                                             X -> (X)  (2)
+ |s2|                     |(|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td class="highlight">shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      ))$                    S -> X$   (1)
+ |s2|                     | |                                             X -> (X)  (2)
+ |s2|                     |(|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td class="highlight">shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |s5|                     | |                      )$                     S -> X$   (1)
+ |s2|                     |)|                                             X -> (X)  (2)
+ |s2|                     |(|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td class="highlight">reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |s5|                     | |                      )$                     S -> X$   (1)
+ |s2|                     |)|                                             X -> (X)  (2)
+ |s2|                     |(|                                             <b class="blue">X -> ( )  (3)</b>
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td class="highlight">reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      )$                     S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s2|                     | |                                             <b class="blue">X -> ( )  (3)</b>
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td class="highlight">reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      )$                     S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s2|                     |X|                                             <b class="blue">X -> ( )  (3)</b>
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td class="highlight">goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      )$                     S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s2|                     |X|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td class="highlight">goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      )$                     S -> X$   (1)
+ |s3|                     | |                                             X -> (X)  (2)
+ |s2|                     |X|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td class="highlight">shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      )$                     S -> X$   (1)
+ |s3|                     | |                                             X -> (X)  (2)
+ |s2|                     |X|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td class="highlight">shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |s4|                     | |                      $                      S -> X$   (1)
+ |s3|                     |)|                                             X -> (X)  (2)
+ |s2|                     |X|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td class="highlight">reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |s4|                     | |                      $                      S -> X$   (1)
+ |s3|                     |)|                                             <b class="blue">X -> (X)  (2)</b>
+ |s2|                     |X|                                             X -> ( )  (3)
+ |s0|                     |(|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td class="highlight">reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      $                      S -> X$   (1)
+ |  |                     | |                                             <b class="blue">X -> (X)  (2)</b>
+ |  |                     | |                                             X -> ( )  (3)
+ |s0|                     | |                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td class="highlight">reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      $                      S -> X$   (1)
+ |  |                     | |                                             <b class="blue">X -> (X)  (2)</b>
+ |  |                     | |                                             X -> ( )  (3)
+ |s0|                     |X|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td class="highlight">goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      $                      S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |  |                     | |                                             X -> ( )  (3)
+ |s0|                     |X|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td class="highlight">goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      $                      S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s1|                     | |                                             X -> ( )  (3)
+ |s0|                     |X|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Ejemplo LR(0) parsing</h2>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="highlight">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	  <pre><b>Estados                 Símbolos                   Input                    Gramática
+ |  |                     | |                      $                      S -> X$   (1)
+ |  |                     | |                                             X -> (X)  (2)
+ |s1|                     | |                                             X -> ( )  (3)
+ |s0|                     |X|                                           
+</b></pre>
+	</article>
+      </slide>
+      
+      
+      
       <slide class="logoslide dark nobackground">
       </slide>
 
