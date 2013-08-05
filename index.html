@@ -103,11 +103,8 @@ B -> d
 	<article>
 	  <ul class="build">
 	    <li>Utiliza derivación derecha.</li>
-	    <li>No necesita factorizar las gramáticas por la izquierda.</li>
-	    <li>Intenta construir un árbol de parseo comenzando desde las hojas del árbol, construyendo hasta llegar a la raíz.</li>
-	    <li>Se puede visualizar este proceso como <b>reducir</b> el string de entrada hasta obtener el símbolo inicial de la gramática.</li>
-	    <li>En cada paso de reducción se reemplaza un substring del input por el no terminal del lado izquierdo de alguna producción.</li>
-	    <li>Al finalizar este proceso, se obtiene un arbol por una derivación derecha.</li>
+	    <li class="blue">No necesita factorizar las gramáticas por la izquierda.</li>
+	    <li>Podemos utilizar gramáticas más 'naturales' o fáciles de entender.</li>
 	  </ul>
 	</article>
       </slide>
@@ -1301,11 +1298,1292 @@ Push estado k al stack de símbolos (según goto k).
 	</article>
       </slide>
       
-      
-      
-      <slide class="logoslide dark nobackground">
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>Implementación</h2>
+	  <h3>LR(0)</h3>
+	</hgroup>
       </slide>
-
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	  <h3>Implementación</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Agregar S' -> S$.</li>
+	    <li>Calcular conjunto de items.</li>
+	    <li>Construir DFA.</li>
+	    <li>Calcular tabla de parseo en base al DFA.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0) parsing</h2>
+	  <h3>Implementación</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Debemos aumentar la gramática original agregando la producción <b class="blue">S' -> S$.</b></li>
+	    <li>Donde <b>S</b> es el símbolo de inicio.</li>
+	    <li>Esto se hace con el motivo de que el parser sepa que debe detenerse al reducir esta producción.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Items</h2>
+	  <h3>LR(0) parsing</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Permite identificar cuánto se ha escaneado sobre una producción.</li>
+	    <li>Para eso se utiliza un punto &sdot;.</li>
+	    <li>Ejemplo: A -> XYZ</li>
+	    <pre class="prettyprint">
+	    A -> &sdot;XYZ
+	    A -> X&sdot;YZ
+	    A -> XY&sdot;XZ
+	    A -> XYZ&sdot;
+</pre>
+	    <li> X -> &epsilon; sólo produce el item X -> &sdot;</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Items</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>S -> X$</li>
+	    <li>X -> (X)</li>
+	    <li>X -> ( )</li>
+	    <li>
+	      <pre class="prettyprint">
+	      S -> &sdot;X$
+	      S -> X&sdot;$
+	      X -> &sdot;(X)
+	      X -> (&sdot;X)
+	      X -> (X&sdot;)
+	      X -> (X)&sdot;
+	      X -> &sdot;()
+	      X -> (&sdot;)
+	      X -> ()&sdot;
+</pre>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>LR(0) parsing</h3>
+	</hgroup>
+	<article class="smaller">
+	  <ul class="build">
+	    <li>Construído en base a los items.</li>
+	    <li>Cada estado del DFA será un subjunto de items.</li>
+	    <li>Si un estado contiene el item A -> &alpha; &sdot; c &beta;
+	      <ul>
+		<li>Y el siguiente token es <b>c</b>.</li>
+		<li>Debe hacer un shift, el siguiente estado contendrá A -> &alpha;c&sdot;&beta;</li>
+	      </ul>
+	    </li>
+	    <li>Si un estado contiene el item A -> &alpha; &sdot;
+	      <ul>
+		<li>Significa que el parser ya consumió toda la producción.</li>
+		<li>Debe hacer una reducción utilizando A -> &alpha;.</li>
+	      </ul>
+	    </li>
+	    <li>Si un estado contiene el item S -> &alpha; &sdot; $
+	      <ul>
+		<li>Y además ya se consumió todo el string de entrada.</li>
+		<li>Significa que el parser logró reducir hasta el símbolo de inicio.</li>
+		<li>Debe aceptar el string como parte del lenguaje.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>LR(0) parsing</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Para construir el DFA necesitamos 2 funciones.</li>
+	    <li>Closure
+	      <ul>
+		<li>Obtiene todos los items en el mismo estado.</li>
+	      </ul>
+	    </li>
+	    <li>Goto
+	      <ul>
+		<li>Obtiene el siguiente estado, dado un estado y un símbolo de la gramática.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Closure</h2>
+	  <h3>LR(0) parsing</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Para un conjunto de items I:</li><br/>
+	    <li>Todo item contenido en I, pertenece a Closure(I)</li><br/>
+	    <li>Si A -> &alpha; &sdot; B &beta; &isin; Closure(I) y B -> &sdot; &gamma;</li>
+	    <li>Entonces B -> &sdot; &gamma; &isin; Closure(I)</li><br/>
+	    <li>Repetir hasta que no se puedan agregar más items a Closure(I)</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Closure</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>closure({X -> (&sdot;X)}):
+	      <ul class="build">
+		<li>X -> (&sdot;X)</li>
+		<li>X -> &sdot; (X)</li>
+		<li>X -> &sdot; ( )</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Closure</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>closure({S -> &sdot;X$}):
+	      <ul class="build">
+		<li>S -> &sdot; X$</li>
+		<li>X -> &sdot; (X)</li>
+		<li>X -> &sdot; ( )</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Goto</h2>
+	  <h3>LR(0) parsing</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Para un conjunto de items I.</li>
+	    <li>Y un símbolo de la gramática X.</li>
+	    <li>goto(I, X) = closure({A -> &alpha; X &sdot; &beta; | A -> &sdot; X &beta; &isin; I})</li>
+	  </ul>
+	  <br/>
+	  <ul class="build blue">
+	    <li>En otras palabras, si A -> &sdot; X &beta; &isin; I, buscamos los items resultantes al mover el punto sobre X.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Goto</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>goto({X -> ( &sdot; X)}, X):
+	      <ul class="build">
+		<li>X -> (X &sdot; )</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Goto</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>goto({X -> &sdot; (X)}, ( ) :
+	      <ul class="build">
+		<li>X -> ( &sdot; X)</li>
+		<li>X -> &sdot; (X)</li>
+		<li>X -> &sdot; ( )</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Algoritmo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Iniciar con la producción <b>S -> &sdot; &beta; $</b></li>
+	    <li>El primer estado será <b>closure({S -> &sdot; &beta; $})</b></li>
+	    <li>Elegir un estado <b>I</b>
+	      <ul>
+		<li>Para cada item <b class="blue">A -> &alpha; &sdot; X &beta;</b> &isin; <b>I</b>
+		  <ul>
+		    <li>Calcular <b class="blue">goto(I, X)</b>.</li>
+		    <li>Si <b>goto(I, X)</b> no es un estado ya existente, agregarlo como estado nuevo.</li>
+		    <li>Agregar una arista etiquetada con <b>X</b> desde <b>I</b> hacia <b>goto(I, X)</b>.</li>
+		  </ul>
+		</li>
+	      </ul>
+	    </li>
+	    <li>Repetir hasta que no se agreguen más estados.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                                          s0 = closure({S -> &sdot; X $})
+X -> (X)                                                                  
+X -> ( )                                                         
+    
+S -> &sdot; X$                                                                 
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                                          s0 = closure({S -> &sdot; X $})
+X -> (X)                                                         s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}         
+X -> ( )                                                         
+    
+S -> &sdot; X$                                                                 
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                                          s0 = closure({S -> &sdot; X $})
+X -> (X)                                                         s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}         
+X -> ( )                                                         
+                                                                 goto(s0, X) = ?
+S -> &sdot; X$                                                                 
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                                          s0 = closure({S -> &sdot; X $})
+X -> (X)                                                         s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}         
+X -> ( )                                                         
+                                                                 goto(s0, X) = ?
+S -> &sdot; X$                                                        goto(s0, X) = closure({S -> X&sdot;$})
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                                          s0 = closure({S -> &sdot; X $})
+X -> (X)                                                         s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}         
+X -> ( )                                                         
+                                                                 goto(s0, X) = ?
+S -> &sdot; X$                                                        goto(s0, X) = {S -> X&sdot;$}
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                                          s0 = closure({S -> &sdot; X $})
+X -> (X)                                                         s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+X -> ( )                                                         
+                                                                 goto(s0, X) = {S -> X&sdot;$}
+S -> &sdot; X$                                                        goto(s0, () = ?
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s0 = closure({S -> &sdot; X $})
+X -> (X)                                        s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;()}
+X -> ( )                                                         
+                                                goto(s0, X) = {S -> X&sdot;$}
+S -> &sdot; X$                                       goto(s0, () = closure({X -> (&sdot;X), X -> (&sdot;)})
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s0 = closure({S -> &sdot; X $})
+X -> (X)                                        s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;()}
+X -> ( )                                                         
+                                                goto(s0, X) = {S -> X&sdot;$}
+S -> &sdot; X$                                       goto(s0, () = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Algoritmo</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Iniciar con la producción <b>S -> &sdot; &beta; $</b></li>
+	    <li>El primer estado será <b>closure({S -> &sdot; &beta; $})</b></li>
+	    <li>Elegir un estado <b>I</b>
+	      <ul>
+		<li>Para cada item <b class="blue">A -> &alpha; &sdot; X &beta;</b> &isin; <b>I</b>
+		  <ul>
+		    <li>Calcular <b class="blue">goto(I, X)</b>.</li>
+		    <li>Si <b>goto(I, X)</b> no es un estado ya existente, agregarlo como estado nuevo.</li>
+		    <li>Agregar una arista etiquetada con <b>X</b> desde <b>I</b> hacia <b>goto(I, X)</b>.</li>
+		  </ul>
+		</li>
+	      </ul>
+	    </li>
+	    <li>Repetir hasta que no se agreguen más estados.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = 
+                                                
+S -> &sdot; X$                                       
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = closure({X -> (X&sdot;)})
+                                                
+S -> &sdot; X$                                       
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                
+S -> &sdot; X$                                       
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                goto(s2, )) = ?
+S -> &sdot; X$                                       
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                goto(s2, )) = closure({X -> ()&sdot;})     
+S -> &sdot; X$                                  
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                goto(s2, )) = {X -> ()&sdot;}
+S -> &sdot; X$                                       
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                goto(s2, )) = {X -> ()&sdot;}
+S -> &sdot; X$                                       goto(s2, () = ?     
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                goto(s2, )) = {X -> ()&sdot;}
+S -> &sdot; X$                                       goto(s2, () = closure({X -> (&sdot;X), X -> (&sdot;)})
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+X -> (X)                                        
+X -> ( )                                        goto(s2, X) = {X -> (X&sdot;)}
+                                                goto(s2, )) = {X -> ()&sdot;}
+S -> &sdot; X$                                       goto(s2, () = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s3 = {X -> (X&sdot;)}
+X -> (X)                                        
+X -> ( )                                        goto(s3, )) = ?
+                                                
+S -> &sdot; X$                                  
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s3 = {X -> (X&sdot;)}
+X -> (X)                                        
+X -> ( )                                        goto(s3, )) = closure({X -> (X)&sdot;})
+                                                
+S -> &sdot; X$                                  
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         s3 = {X -> (X&sdot;)}
+X -> (X)                                        
+X -> ( )                                        goto(s3, )) = {X -> (X)&sdot;}
+                                                
+S -> &sdot; X$                                  
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre>
+S -> X$                                         
+X -> (X)                                        
+X -> ( )                                        
+                                                
+S -> &sdot; X$                                  
+S -> X &sdot; $                                                                
+X -> &sdot; ( X )                                                              
+X -> ( &sdot; X )                                                              
+X -> ( X &sdot; )                                                              
+X -> ( X ) &sdot;                                                              
+X -> &sdot; ( )                                                                
+X -> ( &sdot; )                                                                
+X -> ( ) &sdot;                                                                
+	  </pre>
+	  <pre class="prettyprint">
+s0 = {S -> &sdot;X$, X -> &sdot;(X), X -> &sdot;( )}
+s1 = {S -> X&sdot;$}
+s2 = {X -> (&sdot;X), X -> (&sdot;), X -> &sdot;(X), X -> &sdot;()}
+s3 = {X -> (X&sdot;)}
+s4 = {X -> (X)&sdot;}
+s5 = {X -> ()&sdot;}
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <pre class="prettyprint">	  
+                                 s1
+                                -----------
+                ------ X -----> | S -> X&sdot;$ |  
+          s0   |                -----------
+	 --------------        
+	|  S -> &sdot;X$   |       
+	|  X -> &sdot;(X)  |        
+	|  X -> &sdot;( )  |                ------ ( ------
+	 --------------            s2   |             |
+	       |                 -------------- <------|
+	       |                |  X -> (&sdot;X)  |                  s3
+	       |                |  X -> (&sdot;)   |                 ---------------
+                ------ ( ----->  |  X -> &sdot;(X)  |------ X ------>  |  X -> (X&sdot;)  |
+				|  X -> &sdot;()   |                 ---------------
+				 ---------------                         |
+				       |                               |
+				       )                               )
+				  s5   |                           s4  |
+				  -------------                     --------------
+				 |  X -> ()&sdot;  |                   |  X -> (X)&sdot;  |
+				  -------------                     --------------
+	  </pre>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>DFA</h2>
+	  <h3>Tabla de parseo</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>A partir del DFA podemos construir una tabla de parseo.</li>
+	    <li>Para cada estado del DFA:
+	      <ul>
+		<li>Una transición utilizando un <b class="red">terminal</b> significa hacer un shift al estado destino.</li>
+		<li class="blue">shift to sN.</li><br/>
+		
+		<li>Una transición utilizando un <b class="red">no terminal</b> significa hacer un goto al estado destino.</li>
+		<li class="blue">goto sN.</li><br/>
+		
+		<li>Si existe un item <b class="red">A -> &alpha; &sdot;</b></li>
+		<li class="blue">Implica hacer una reducción de esa producción para todos los terminales (reduce k).</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Tabla de parseo</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red"></td><td class="red"></td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red"></td><td class="red"></td><td class=""></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red"></td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red"></td><td>shift to s4</td><td class="red"></td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Tabla de parseo</h2>
+	  <h3>Ejemplo</h3>
+	</hgroup>
+	<article class="smaller">
+	  <table>
+	    <tr>
+	      <th></th><th colspan="3">Acción</th><th>Goto</th>
+	    </tr>
+	    <tr>
+	      <th>Estado</th><th>(</th><th>)</th><th>$</th><th>X</th>
+	    </tr>
+	    <tr>
+	      <td>s0</td><td>shift to s2</td><td class="red">error</td><td class="red">error</td><td>goto s1</td>
+	    </tr>
+	    <tr>
+	      <td>s1</td><td class="red">error</td><td class="red">error</td><td class="green">accept!</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s2</td><td>shift to s2</td><td>shift to s5</td><td class="red">error</td><td>goto s3</td>
+	    </tr>
+	    <tr>
+	      <td>s3</td><td class="red">error</td><td>shift to s4</td><td class="red">error</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s4</td><td>reduce (2)</td><td>reduce (2)</td><td>reduce (2)</td><td></td>
+	    </tr>
+	    <tr>
+	      <td>s5</td><td>reduce (3)</td><td>reduce (3)</td><td>reduce (3)</td><td></td>
+	    </tr>
+	  </table>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(0)</h2>
+	  <h3>Debilidades</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Un item A -> &alpha; &sdot; implica una reducción.</li>
+	    <li>Pero no indica cúando reducir, por lo que la aplicamos en todos los terminales.</li>
+	    <li>¿Qué sucede con los estados que contengan un item de esta forma, y además tengan transiciones salientes?</li>
+	    <li>Tendríamos un conflicto shift/reduce.</li>
+	    
+	    <li>¿Qué sucede con los estados que contengan más de un item de esta forma?</li>
+	    <li>Tendríamos un conflicto reduce/reduce.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>SLR(1) parsing</h2>
+	  <h3>Bottom-Up parsing</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>SLR(1)</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Mejora sobre LR(0).</li>
+	    <li>La idea es aprovechar la información del token de lookahead (1) para evitar conflictos.</li>
+	    <li>Haremos una reducción sólo cuando el símbolo de entrada puede ir después del no terminal de la reducción.</li>
+	    <li>Esto implica que debemos determinar qué terminaes pueden seguir a un no terminal.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Follow</h2>
+	  <h3>SLR(1)</h3>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Para un no terminal A, Follow(A) es el conjunto de terminales que puede seguir A en alguna derivación.</li>
+	    <li>$ &isin; Follow(S), si S es el símbolo de inicio.</li>
+	    <li>Si A -> &alpha;B&beta;, entonces First(&beta;) &sube; Follow(B).</li>
+	    <li>Si A -> &alpha;B, entonces Follow(A) &sube; Follow(B).</li>
+	    <li>Si A -> &alpha;B&beta; y &beta; deriva &epsilon;, entonces Follow(A) &sube; Follow(B).</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>SLR(1)</h2>
+	  <h3>Tabla de parseo</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Para cada estado del DFA:
+	      <ul>
+		<li>Una transición utilizando un <b class="red">terminal</b> significa hacer un shift al estado destino.</li>
+		<li class="blue">shift to sN.</li><br/>
+		
+		<li>Una transición utilizando un <b class="red">no terminal</b> significa hacer un goto al estado destino.</li>
+		<li class="blue">goto sN.</li><br/>
+		
+		<li>Si existe un item <b class="red">A -> &alpha; &sdot;</b></li>
+		<li class="blue">Implica hacer una reducción de esa producción para <b class="red">todos los terminales que puedan seguir al no terminal</b> (reduce k).</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>LR(1) parsing</h2>
+	  <h3>Bottom-Up parsing</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(1)</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Más completo que SLR(1).</li>
+	    <li>Los items tendrán información de:
+	      <ul>
+		<li>Producción.</li>
+		<li>Posición (el punto).</li>
+		<li>Símbolo de look ahead</li>
+	      </ul>
+	    </li>
+	    <li>Los items LR(1) tienen la forma [A -> &alpha;&sdot;B   T]:
+	      <ul>
+		<li>A -> &alpha;B es una producción.</li>
+		<li>&sdot; indica la posición.</li>
+		<li>T es un terminal o $.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(1)</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Un item [A -> &alpha;&sdot;B   T] significa:
+	      <ul>
+		<li>El parser ya consumió &alpha;.</li>
+		<li>Si parsea &beta; y el siguiente token es T</li>
+		<li>Entonces debe reducir usando A -> &alpha;B.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LR(1)</h2>
+	</hgroup>
+	<article>
+	  <div class="columns-2">
+	    <ul>
+	      <li>S -> X$</li>
+	      <li>X -> (X)</li>
+	      <li>X -> &epsilon;</li><br/>
+	      <li>[S -> &sdot;X$    &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[S -> &sdot;X$    &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[S -> &sdot;X$    &nbsp;&nbsp;&nbsp;$]</li>
+	      <li>[S -> X&sdot;$    &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[S -> X&sdot;$    &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[S -> X&sdot;$    &nbsp;&nbsp;&nbsp;$]</li>
+	      <li>[X -> &sdot;(X)   &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[X -> &sdot;(X)   &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[X -> &sdot;(X)   &nbsp;&nbsp;&nbsp;$]</li>
+	    </ul>
+	    <ul>
+	      <li>[X -> (&sdot;X)   &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[X -> (&sdot;X)   &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[X -> (&sdot;X)   &nbsp;&nbsp;&nbsp;$]</li>
+	      <li>[X -> (X&sdot;)   &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[X -> (X&sdot;)   &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[X -> (X&sdot;)   &nbsp;&nbsp;&nbsp;$]</li>
+	      <li>[X -> (X)&sdot;   &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[X -> (X)&sdot;   &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[X -> (X)&sdot;   &nbsp;&nbsp;&nbsp;$]</li>
+	      <li>[X -> &sdot;      &nbsp;&nbsp;&nbsp;(]</li>
+	      <li>[X -> &sdot;      &nbsp;&nbsp;&nbsp;)]</li>
+	      <li>[X -> &sdot;      &nbsp;&nbsp;&nbsp;$]</li>
+	    </ul>
+	  </div>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Closure</h2>
+	  <h3>LR(1)</h3>
+	</hgroup>
+	<article>
+	  Closure(I):
+	  <ul class="build">
+	    <li>repeat
+	      <ul>
+		<li>for each [A -> &alpha; &sdot; X &beta; &nbsp; c] &isin; I:</li>
+		  <ul>
+		    <li>for each X -> &gamma;
+		      <ul>
+			<li>for each d &isin; First(&beta;c)
+			  <ul>
+			    <li> I = I &cup; {[X -> &sdot; &gamma; &nbsp; d]}</li>
+			  </ul>
+			</li>
+		      </ul>
+		    </li>
+		  </ul>
+	      </ul>
+	    </li>
+	    <li>until no more items can be added to I</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Goto</h2>
+	  <h3>LR(1)</h3>
+	</hgroup>
+	<article>
+	  goto(I, X):
+	  <ul class="build">
+	    <li>J = {}
+	      <ul>
+		<li>for each [A -> &alpha; &sdot; X &beta; &nbsp; c] &isin; I:
+		  <ul>
+		    <li> J = J &cup; {[A -> &alpha; X &sdot; &beta; &nbsp; c]}</li>
+		  </ul>
+		</li>
+	      </ul>
+	    </li>
+	    <li>goto(I, X) = closure(J)</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>Tabla de parseo</h2>
+	  <h3>LR(1)</h3>
+	</hgroup>
+	<article>
+	  <ul>
+	    <li>Para cada estado del DFA:
+	      <ul>
+		<li>Una transición utilizando un <b class="red">terminal</b> significa hacer un shift al estado destino.</li>
+		<li class="blue">shift to sN.</li><br/>
+		
+		<li>Una transición utilizando un <b class="red">no terminal</b> significa hacer un goto al estado destino.</li>
+		<li class="blue">goto sN.</li><br/>
+		
+		<li>Si existe un item <b class="red">[A -> &alpha; &sdot; &nbsp;&nbsp; b]</b></li>
+		<li class="blue">Implica hacer una reducción de esa producción para <b class="red">b</b> (reduce k).</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="segue dark nobackground">
+	<aside class="gdbar"><img src="images/ug_128.png"></aside>
+	<hgroup class="auto-fadein">
+	  <h2>LALR(1) parsing</h2>
+	  <h3>Bottom-Up parsing</h3>
+	</hgroup>
+      </slide>
+      
+      <slide>
+	<hgroup>
+	  <h2>LALR(1)</h2>
+	</hgroup>
+	<article>
+	  <ul class="build">
+	    <li>Simple mejora sobre LR(1).</li>
+	    <li>LR(1) aumenta considerablemente la cantidad de items, por lo que puede llegar a tener muchos estados.</li>
+	    <li>Si 2 estados son identicos, excepto por el token de look ahead de los items, se unen en un solo estado.</li>
+	    <li>Esto reduce la cantidad de estados del DFA, mejorando el rendimiento del parser.</li>
+	    <li>Nota: Es posible que esto provoque más conflictos reduce/reduce.</li>
+	  </ul>
+	</article>
+      </slide>
+      
+      <slide class="logoslide dark nobackground"></slide>
+      
       <slide class="backdrop"></slide>
 
     </slides>
