@@ -1,7 +1,7 @@
 var SLIDE_CONFIG = {
   // Slide settings
   settings: {
-    title: 'Introducción',
+    title: 'AST',
     subtitle: 'Ciencias de la Computaci&oacute;n IV',
     eventTitle: '2013',
     useBuilds: true, // Default: true. False will turn off slide animation builds.

@@ -38,31 +38,112 @@
       
       
       
-      <slide>
-	<hgroup>
-	  <h2>Slide with Bullets</h2>
-	</hgroup>
-	<article>
-	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
-	  </ul>
-	</article>
-      </slide>
-
-      
-
-      <slide class="logoslide dark nobackground">
-      </slide>
-
-      <slide class="backdrop"></slide>
-
+    <slide>
+        <hgroup>
+          <h2>AST</h2>
+        </hgroup>
+        <article>
+          <ul>
+            <li>Abstract Syntax Tree.</li>
+            <li>Representación intermedia de alto nivel.</li>
+            <li>Retiene la estructura del lenguaje fuente.</li>
+            <li>Fácil de generar a partir del proceso de parseo.</li>
+          </ul>
+        </article>
+    </slide>
+    
+    <slide>
+        <hgroup>
+          <h2>AST</h2>
+        </hgroup>
+        <article>
+          <ul>
+            <li>El objetivo es ocultar todo el overhead introducido por el parseo.</li>
+            <li>Obtener una representación del input, manteniendo la estructura de árbol, pero de forma simplificada.</li>
+            <li>Abstraer sólo la información relevante para el resto del análisis.</li>
+            <li>Ocultar todo aquello que ya no es interesante.</li>
+          </ul>
+        </article>
+    </slide>
+    
+    <slide>
+        <hgroup>
+          <h2>AST</h2>
+        </hgroup>
+        <article>
+            <ul>
+                <li>1 + 2 * 3</li>
+            </ul>
+          <pre>
+                  E
+                / |  \
+               /  +   \
+              /        \
+             T          T
+             |       /  |  \
+             N       N  *   N
+             |       |      |
+             1       2      3
+        </pre>
+            <ul class="build">
+                <li>¿Necesitamos todo eso?</li>
+            </ul>
+        </article>
+    </slide>
+    
+    <slide>
+        <hgroup>
+          <h2>AST</h2>
+        </hgroup>
+        <article>
+            <ul>
+                <li>1 + 2 * 3</li>
+            </ul>
+          <pre>
+                  +
+                /   \
+               1     *
+                   /   \
+                  2     3
+        </pre>
+            <ul class="build">
+                <li>¿Qué tal así?</li>
+            </ul>
+        </article>
+    </slide>
+    
+    <slide>
+        <hgroup>
+            <h2>AST</h2>
+        </hgroup>
+        <article>
+            <ul>
+                <li>Las gramáticas imponen estructura, es útil conservarla.</li>
+                <li>La sintaxis abstracta nos permite conservarla, dejando atrás la forma 'fea' en que se obtuvo.</li>
+                <li>El AST nos sirve para <b>representar</b>, y no para <b>parsear</b>.</li>
+            </ul>
+        </article>
+    </slide>
+    
+    <slide>
+        <hgroup>
+            <h2>AST</h2>
+        </hgroup>
+        <article>
+            <ul>
+                <li>La implementación de un AST permite realizar algunas optimizaciones durante su construcción.</li>
+                <li>Simple AST -> (+ (5) (* (3) (4)))</li>
+                <li>Folded AST -> (17)</li>
+                <li>Más sobre esto, más adelante...</li>
+            </ul>
+        </article>
+    </slide>
+    
+    <slide class="logoslide dark nobackground">
+    </slide>
+    
+    <slide class="backdrop"></slide>
+        
     </slides>
     <!--[if IE]>
       <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
