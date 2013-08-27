@@ -35,34 +35,250 @@
       
       
       <!-- Content starts HERE! -->
-      
-      
-      
-      <slide>
-	<hgroup>
-	  <h2>Slide with Bullets</h2>
-	</hgroup>
-	<article>
-	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
-	  </ul>
-	</article>
-      </slide>
-
-      
-
-      <slide class="logoslide dark nobackground">
-      </slide>
-
-      <slide class="backdrop"></slide>
-
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+            </hgroup>
+            <article>
+                Objetivo:
+                <ul class="build">
+                    <li>Asegurarse que el programa cumple con la definición del lenguaje.</li>
+                    <li>Brindar mensajes de error útiles y entendibles.</li>
+                    <li>Titles and subtitles should never have a period at the end</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+            </hgroup>
+            <article>
+                Sintaxis:
+                <ul>
+                    <li>Trata sobre cómo se ve un programa.</li>
+                    <li>Analiza su representación textual, la estructura.</li>
+                    <li>Podemos utilizar una definición matemática muy precisa.</li>
+                </ul>
+                Semántica:
+                <ul>
+                    <li>Trata sobre qué significa un programa.</li>
+                    <li>Una definición matemática precisa es múy difícil de obtener.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+            </hgroup>
+            <article>
+                2 grandes clases de chequeos:
+                <ul class="build">
+                    <li>Chequeos estáticos
+                        <ul class="build">
+                            <li>Chequeos de unicidad</li>
+                            <li>Chequeos de tipos.</li>
+                            <li>Chequeos de control de flujo.</li>
+                        </ul>
+                    </li>
+                    <li>Chequeos dinámicos.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+                <h3>Control de flujo</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>El control del flujo de un programa depende del contexto.</li>
+                    <li>Ej.: Una sentencia <b>break</b> sólo es válida dentro de un while, for, switch.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+                <h3>Unicidad</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Uso correcto (o incorrecto) de identificadores.</li>
+                    <li>Ej.: Una variable debe ser definida antes de ser referenciada.</li>
+                    <li>No se pueden representar con una gramática.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+                <h3>Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Compatibilidad de tipos entre 2 o más operandos, o entre un operando y su operador, ej:</li>
+                    <li>El tipo de retorno de una función debe coincidir con el tipo de su declaración.</li>
+                    <li>Identificadores en una expresión deben ser de tipos 'compatibles'.</li>
+                    <li>El lado izquiero de una asignación debe ser 'asignable'.</li>
+                    <li>Los argumentos en la llamada a una función deben coincidir con la declaración de la función.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+                <h3>Tipos</h3>
+            </hgroup>
+            <article>
+                ¿Cómo sabemos si 2 operandos son <b>compatibles</b>?
+            </article>
+        </slide>
+        
+        <slide class="segue dark nobackground">
+            <aside class="gdbar"><img src="images/ug_128.png"></aside>
+            <hgroup class="auto-fadein">
+                <h2>Sistema de tipos</h2>
+                <h3>Análisis Semántico</h3>
+            </hgroup>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Análisis Semántico</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Utilizado para los chequeos de tipos.</li>
+                    <li>Incorpora los siguientes elementos:
+                        <ul class="build">
+                            <li>Construcciones sintácticas del lenguaje.</li>
+                            <li>Concepto de tipo.</li>
+                            <li>Reglas de asignación entre tipos y construcciones del lenguaje.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Tipos básicos</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Dependen del lenguaje.</li>
+                    <li>Tipos atómicos, ej:
+                        <ul>
+                            <li>char</li>
+                            <li>int</li>
+                            <li>float</li>
+                            <li>boolean</li>
+                        </ul>
+                    </li>
+                    <li>type_error: Tipo especial, que representa un error.</li>
+                    <li>void: Denota la ausencia de un valor.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Arreglos</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>El tipo de un arreglo consiste en el tipo de sus elementos, y la cantidad de estos.</li>
+                    <li>
+                        <ul>
+                            <li>Ejemplo:</li>
+                            <li>char[100] s;</li>
+                            <li><b>array(char, 100)</b></li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Llamadas a funciones</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>El tipo de una llamada a una función consiste en el tipo de cada argumento, la cantidad y el orden de los mismos.</li>
+                    <li>
+                        <ul>
+                            <li>Ejemplo:</li>
+                            <li>char[100] s;</li>
+                            <li><b>array(char, 100)</b></li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Llamadas a funciones</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>El tipo de una llamada a una función consiste en el tipo de cada argumento, la cantidad y el orden de los mismos.</li>
+                    <li>
+                        <ul>
+                            <li>Ejemplo:</li>
+                            <li>char[100] s;</li>
+                            <li><b>array(char, 100)</b></li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide class="segue dark nobackground">
+            <aside class="gdbar"><img src="images/ug_128.png"></aside>
+            <hgroup class="auto-fadein">
+                <h2>Conversiones de Tipos</h2>
+                <h3>Análisis Semántico</h3>
+            </hgroup>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Coerción de tipos</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Conversión de tipos implícitas entre 2 tipos.</li>
+                    <li>
+                        <ul>
+                            <li>Ejemplo:</li>
+                            <li>int a;</li>
+                            <li>float a;</li>
+                            <li>b = b + a;</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide class="logoslide dark nobackground"></slide>
+        
+        <slide class="backdrop"></slide>
+        
     </slides>
     <!--[if IE]>
       <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
