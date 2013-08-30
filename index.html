@@ -45,7 +45,6 @@
                 <ul class="build">
                     <li>Asegurarse que el programa cumple con la definición del lenguaje.</li>
                     <li>Brindar mensajes de error útiles y entendibles.</li>
-                    <li>Titles and subtitles should never have a period at the end</li>
                 </ul>
             </article>
         </slide>
@@ -220,27 +219,8 @@
                     <li>
                         <ul>
                             <li>Ejemplo:</li>
-                            <li>char[100] s;</li>
-                            <li><b>array(char, 100)</b></li>
-                        </ul>
-                    </li>
-                </ul>
-            </article>
-        </slide>
-        
-        <slide>
-            <hgroup>
-                <h2>Llamadas a funciones</h2>
-                <h3>Sistema de Tipos</h3>
-            </hgroup>
-            <article>
-                <ul class="build">
-                    <li>El tipo de una llamada a una función consiste en el tipo de cada argumento, la cantidad y el orden de los mismos.</li>
-                    <li>
-                        <ul>
-                            <li>Ejemplo:</li>
-                            <li>char[100] s;</li>
-                            <li><b>array(char, 100)</b></li>
+                            <li>boolean foo(String s, int a, float f);</li>
+                            <li><b>function(boolean, String, int, float)</b></li>
                         </ul>
                     </li>
                 </ul>
@@ -262,13 +242,103 @@
             </hgroup>
             <article>
                 <ul class="build">
-                    <li>Conversión de tipos implícitas entre 2 tipos.</li>
+                    <li>Conversión de tipos implícita entre 2 tipos.</li>
                     <li>
                         <ul>
                             <li>Ejemplo:</li>
                             <li>int a;</li>
                             <li>float a;</li>
                             <li>b = b + a;</li>
+                        </ul>
+                    </li>
+                    <li>Dos formas:
+                        <ul>
+                            <li>Widening conversion (conversión a un tipo más 'grande').</li>
+                            <li>Narrowing conversion (conversión a un tipo más 'pequeño').</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Casting</h2>
+                <h3>Sistema de Tipos</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Conversión de tipos explícita entre 2 tipos.</li>
+                    <li>
+                        <ul>
+                            <li>Ejemplo:</li>
+                            <li>int a;</li>
+                            <li>float a;</li>
+                            <li>a = (int)b + a;</li>
+                        </ul>
+                    </li>
+                    <li>Dos formas:
+                        <ul>
+                            <li>Widening conversion (conversión a un tipo más 'grande').</li>
+                            <li>Narrowing conversion (conversión a un tipo más 'pequeño').</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Tabla de símbolos</h2>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Permite almacenar información semántica sobre las construcciones del programa.</li>
+                    <li>
+                        <ul>
+                            <li>Métodos</li>
+                            <li>Variables</li>
+                            <li>Scopes</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Tabla de símbolos</h2>
+                <h3>Scopes</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Un mismo nombre puede tener distintos significados en diferentes scopes.</li>
+                    <li>
+                        <ul>
+                            <li>Tipos.</li>
+                            <li>Variables.</li>
+                        </ul>
+                    </li>
+                    <li>Esto significa que debemos mantener una tabla de símbolos por cada scope.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Tabla de símbolos</h2>
+                <h3>Operaciones</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>La tabla de símbolos debe soportar las siguientes operaciones.</li>
+                    <li>
+                        <ul>
+                            <li>lookup(id, scopeId)</li>
+                            <li>getType(id, scopeId)</li>
+                            <li>store(id, type, scopeId)</li>
+                            <li>store(id, type, params, scopeId)</li>
+                            <li>addScope(id)</li>
                         </ul>
                     </li>
                 </ul>
