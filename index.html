@@ -14,56 +14,99 @@
     <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
     <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
   </head>
-  <body style="opacity: 0">
-    <slides class="layout-widescreen">
-
-      <slide class="logoslide nobackground">
-	<article class="flexbox vcenter">
-	  <span><img src="images/ug.jpeg"></span>
-	</article>
-      </slide>
-      
-      <slide class="title-slide segue nobackground">
-	<aside class="gdbar"><img src="images/ug_128.png"></aside>
-	<!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
-	<hgroup class="auto-fadein">
-	  <h1 data-config-title><!-- populated from slide_config.json --></h1>
-	  <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
-	  <p data-config-presenter><!-- populated from slide_config.json --></p>
-	</hgroup>
-      </slide>
-      
-      
-      <!-- Content starts HERE! -->
-      
-      
-      
-      <slide>
-	<hgroup>
-	  <h2>Slide with Bullets</h2>
-	</hgroup>
-	<article>
-	  <ul>
-	    <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-	    <li>Title capitalization is title case
-	      <ul>
-		<li>Subtitle capitalization is title case</li>
-	      </ul>
-	    </li>
-	    <li>Subtitle capitalization is title case</li>
-	    <li>Titles and subtitles should never have a period at the end</li>
-	  </ul>
-	</article>
-      </slide>
-
-      
-
-      <slide class="logoslide dark nobackground">
-      </slide>
-
-      <slide class="backdrop"></slide>
-
-    </slides>
+    <body style="opacity: 0">
+        <slides class="layout-widescreen">
+            <slide class="logoslide nobackground">
+                <article class="flexbox vcenter">
+                    <span><img src="images/ug.jpeg"></span>
+                </article>
+            </slide>
+            
+            <slide class="title-slide segue nobackground">
+                <aside class="gdbar"><img src="images/ug_128.png"></aside>
+                <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+                <hgroup class="auto-fadein">
+                    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+                    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+                    <p data-config-presenter><!-- populated from slide_config.json --></p>
+                </hgroup>
+            </slide>
+            
+            <!-- Content starts HERE! -->
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Intermediate Level Representation.</li>
+                        <li>El objetivo es traducir el programa de entrada a una representación intermedia de bajo nivel.</li>
+                        <li>Más cercano a un lenguaje de bajo nivel.</li>
+                        <li>Esta representación se escribe en un lenguaje de bajo nivel genérico, independiente de cualquier arquitectura.</li>
+                        <li>Esto provee algunas ventajas:
+                            <ul>
+                                <li>Es fácil extender el compilador para soportar más arquitecturas.</li>
+                                <li>Se pueden diseñar optimizadores independientes de la arquitectura (registros, memoria, etc.).</li>
+                                <li>Abstrae los detalles de las arquitecturas específicas.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                </hgroup>
+                <article>
+                    <pre>
+ __________            __________                             __________
+|          |          |          |                           |          |
+|   AST    | ------->|   IRT    |--- Intermediate Code ---> | Code Gen |--> Target Code
+|__________|          |__________|                           |__________|
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>A diferencia de una representación intermedia de alto nivel (como el AST):</li>
+                        <li>No le interesa la estructura de árbol.</li>
+                        <li>Tampoco conserva el control de flujo estructurado.</li>
+                        <li>Se prefiere una estructura plana, más cercano al lenguaje de bajo nivel.</li>
+                        <li>Más adecuado para tareas de bajo nivel como asignación de registros, y selección de instrucciones.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Utiliza las estructuras de un lenguaje nivel, pero sin algunas de sus limitaciones:
+                            <ul>
+                                <li>Utiliza registros, pero asume que son ilimitados.</li>
+                                <li>Tiene las mismas estructuras de control de assembler.</li>
+                                <li>Utiliza instrucciones genéricas.</li>
+                                <li>Algunas instrucciones tendrán un equivalente directo en assembler.</li>
+                                <li>Otras instrucciones se traducirán a varias instrucciones reales.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide class="logoslide dark nobackground"></slide>
+            <slide class="backdrop"></slide>
+            
+        </slides>
     <!--[if IE]>
       <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
       <script>CFInstall.check({mode: 'overlay'});</script>
