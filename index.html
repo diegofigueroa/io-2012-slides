@@ -363,6 +363,95 @@
             </article>
         </slide>
         
+        <slide>
+            <hgroup>
+                <h2>Implementación</h2>
+                <h3>Análisis Semántico</h3>
+            </hgroup>
+            <article>
+                <ul class="build">
+                    <li>Únicamente se validan semánticamente programas válidos de forma léxica y sintáctica.</li>
+                    <li>Implementado sobre el AST, posiblemente requiera recorrerlo múltiples veces.</li>
+                    <li>Comúnmente se utiliza una implementación recursiva.</li>
+                    <li>Debe reportar tantos errores semánticos como sea posible.</li>
+                </ul>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Implementación</h2>
+                <h3>Análisis Semántico</h3>
+            </hgroup>
+            <article>
+                <pre>
+                    Ej: Program: a = e1 + e2
+                    check(program p){
+                        t1 = true;
+                        p.exp.each(e) do
+                            t1 &= check(e);
+                        
+                        return t1;
+                    }
+                    
+                    check(location){
+                        symbol = lookup(location.dest_var);
+                        if symbol != null   // dest_var exists :D
+                            symbol.type == checkWithType(location.exp);
+                    }
+                </pre>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Implementación</h2>
+                <h3>Análisis Semántico</h3>
+            </hgroup>
+            <article>
+                <pre>
+                    checkWithType(exp){
+                        t1 = checkWithType(exp.left);
+                        t2 = checkWithType(exp.right);
+                        return isValidOp(exp.operator, t1, t2);
+                    }
+                    
+                    isValidOp(operator, lType, rType){
+                        valid; 
+                        if lType == rType   // no coercion needed :D
+                            valid = operationsFor(lType).includes?(operator);
+                        else
+                            type = coerce(lType, rType);
+                            valid = operationsFor(lType).includes?(operator);
+                        
+                        return valid;
+                    }
+                </pre>
+            </article>
+        </slide>
+        
+        <slide>
+            <hgroup>
+                <h2>Implementación</h2>
+                <h3>Análisis Semántico</h3>
+            </hgroup>
+            <article>
+                <pre>
+                    operationsFor(type){
+                        case type:
+                        when type.to_s == 'int'
+                            return ['+', '-', '*', '/', '%', '==', '!=']
+                        when type.to_s == 'boolean'
+                            return ['&&', '||', '!', '==', '!=']
+                        when type.to_s == 'void'
+                            return []
+                        when type.to_s == 'error'
+                            return []
+                    }
+                </pre>
+            </article>
+        </slide>
+        
         <slide class="logoslide dark nobackground"></slide>
         
         <slide class="backdrop"></slide>
