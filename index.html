@@ -75,11 +75,14 @@
                 </hgroup>
                 <article>
                     <ul>
-                        <li>A diferencia de una representación intermedia de alto nivel (como el AST):</li>
-                        <li>No le interesa la estructura de árbol.</li>
-                        <li>Tampoco conserva el control de flujo estructurado.</li>
-                        <li>Se prefiere una estructura plana, más cercano al lenguaje de bajo nivel.</li>
-                        <li>Más adecuado para tareas de bajo nivel como asignación de registros, y selección de instrucciones.</li>
+                        <li>A diferencia de una representación intermedia de alto nivel (como el AST):
+                            <ul>
+                                <li>No le interesa la estructura de árbol.</li>
+                                <li>Tampoco conserva el control de flujo estructurado.</li>
+                                <li>Se prefiere una estructura plana, más cercano al lenguaje de bajo nivel.</li>
+                                <li>Más adecuado para tareas de bajo nivel como asignación de registros, y selección de instrucciones.</li>
+                            </ul>
+                        </li>
                     </ul>
                 </article>
             </slide>
@@ -90,13 +93,327 @@
                 </hgroup>
                 <article>
                     <ul>
-                        <li>Utiliza las estructuras de un lenguaje nivel, pero sin algunas de sus limitaciones:
+                        <li>Utiliza las estructuras de un lenguaje de bajo nivel, pero sin algunas de sus limitaciones:
                             <ul>
                                 <li>Utiliza registros, pero asume que son ilimitados.</li>
                                 <li>Tiene las mismas estructuras de control de assembler.</li>
                                 <li>Utiliza instrucciones genéricas.</li>
                                 <li>Algunas instrucciones tendrán un equivalente directo en assembler.</li>
                                 <li>Otras instrucciones se traducirán a varias instrucciones reales.</li>
+                            </ul>
+                        </li>
+                        <li>Usualmente sigue un diseño muy simple basado en una lista de nodos.</li>
+                        <li>Un nodo de IRT representa una instrucción.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Por simplicidad se manejan pocas instrucciones, muy simples, representadas por nodos:
+                            <ul>
+                                <li>Load.</li>
+                                <li>Store.</li>
+                                <li>BinOp.</li>
+                                <li>Branch.</li>
+                                <li>Jump.</li>
+                                <li>NOP.</li>
+                            </ul>
+                        </li>
+                        <li>Un nodo de IRT representa una instrucción.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Implementación</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Se recorre el AST de forma recursiva:
+                            <ul>
+                                <li>El objetivo es generar una representación lineal del AST.</li>
+                                <li>Recursivamente se analiza cada sub-arbol del AST.</li>
+                                <li>Cada sub-arbol procude un segmento de una lista.</li>
+                                <li>Estos segmentos se unen para formar una sola lista.</li>
+                                <li>Esta lista representa al programa de entrada, en un espacio de direcciones plano, más cerca a un programa de bajo nivel.</li>
+                            </ul>
+                        </li>
+                        <li>Usualmente sigue un diseño muy simple basado en una lista de nodos.</li>
+                        <li>Un nodo de IRT representa una instrucción.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Implementación</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Lecturas de variables:
+                            <ul>
+                                <li>LOAD de la dirección de la variable a un registro temporal.</li>
+                            </ul>
+                        </li>
+                        <li>Escrituras a variables:
+                            <ul>
+                                <li>STORE el contenido de un registro a la dirección de la variable.</li>
+                            </ul>
+                        </li>
+                        <li>Llamadas a funciones:
+                            <ul>
+                                <li>JUMP a la dirección (etiqueta) de la función.</li>
+                            </ul>
+                        </li>
+                        <li>Expresiones:
+                            <ul>
+                                <li>Lista de nodos BinOp.</li>
+                            </ul>
+                        </li>
+                        <li>Para construcciones más complejas se utilizan plantillas.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                </hgroup>
+                <article class="smaller">
+                    <div class="columns-2">
+                        <ul>
+                            <li>
+                                <pre class="prettyprint" data-lang="java">
+
+
+
+
+
+
+
+
+
+    if( x < y ){
+        a = 0;
+    }else{
+        a = 1;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <pre class="prettyprint" data-lang="irt">
+            
+            start
+              |
+            Load X
+              |
+            Load Y
+              |
+    Branch(x < y, label_true)
+              |
+            Load 0
+              |
+            Store a
+              |
+            Jump(label_end)
+              |
+        Label(label_true)
+              |
+            Load 1
+              |
+            Store a
+              |
+        Label(label_end)
+              |
+             end
+
+</pre>
+                            </li>
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Implementación</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Al proceso de 'aplanar' un segmento del AST se le llama desestructurar.</li>
+                        <li>Este proceso rompe la estructura jerárquica del programa y la reemplaza por una estructura lineal.</li>
+                        <li>Como resultado se obtiene una lista con al menos un nodo inicial y un nodo final.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>destruct(if)</h3>
+                </hgroup>
+                <article>
+                    <pre>
+      if                destruct(if):
+    / | \                   cList = destruct(if.c)
+   c  x  y                  xList = destruct(if.x)
+                            yList = destruct(if.y)
+                            
+                            end = NOP.new
+                            xList.end.next = end
+                            yList.end.next = end
+                            
+                            cList.true_end.next  = xList.start
+                            cList.false_end.next = yList.start
+                            
+                            return List.new(cList.start, end)
+</pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>destruct(while)</h3>
+                </hgroup>
+                <article>
+                    <pre>
+    while               destruct(while):
+    /  \                    cList = destruct(while.c)
+   c    x                   xList = destruct(while.x)
+                            
+                            end = NOP.new
+                            xList.end.next = cList.start
+                            
+                            cList.true_end.next  = xList.start
+                            cList.false_end.next = end
+                            
+                            return List.new(cList.start, end)
+</pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Modelo de Memoria</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Una sola memoria, lineal.</li>
+                        <li>Compuesta de words, direccionable por bytes.</li>
+                        <li>Los nodos se apegan a este modelo:
+                            <ul>
+                                <li>load address, offset: *reg = Mem[address+offset] </li>
+                                <li>store address, offset, value: Mem[address+offset] = value</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Arreglos</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>La variable apunta a la base del arreglo.</li>
+                        <li>Todo el arreglo está almacenado de forma contigua.</li>
+                        <li>Asumimos enteros de 4 bytes.</li>
+                        <li>¿Cómo calculamos v[5]?
+                            <ul>
+                                <li>&v + (5 * 4) </li>
+                                <li>dirección(v) + (índice * tamaño)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Variables locales</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Asumimos que están almacenadas en el stack.</li>
+                        <li>Se direccionan utilizando offsets del stack pointer (sp).</li>
+                        <li>El stack crece hacia abajo, por lo que usamos offsets positivos.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Llamadas a funciones</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Caller:
+                            <ul>
+                                <li>Colocar parámetros según convenio de llamado.</li>
+                                <li>Preparar dirección de retorno según convenio.</li>
+                                <li>Saltar a la función (callie).</li>
+                            </ul>
+                        </li>
+                        <li>Callie:
+                            <ul>
+                                <li>Reservar stack frame (restar al sp).</li>
+                                <li>Ejecutar cuerpo de la función...</li>
+                                <li>Preparar valor de retorno según convenio.</li>
+                                <li>Liberar stack frame (sumar al sp).</li>
+                                <li>Retornar al caller.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>IRT</h2>
+                    <h3>Administración del stack</h3>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Stack frame:
+                            <ul>
+                                <li>Asignado al entrar a un método.</li>
+                                <li>Liberado antes de retornar.</li>
+                                <li>Contiene todas las variables locales y parámetros.</li>
+                                <li>Se asume que todos las variables y parámeotros ocupan un word.</li>
+                            </ul>
+                        </li>
+                        <li>Offsets de variables locales y parámetros:
+                            <ul>
+                                <li>En la tabla de símbolos se almacena la posición (offset) de cada variable/parámetro.</li>
                             </ul>
                         </li>
                     </ul>
