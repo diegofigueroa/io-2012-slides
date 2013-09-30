@@ -36,18 +36,1373 @@
             
             <slide>
                 <hgroup>
-                    <h2>Slide with Bullets</h2>
+                    <h2>Generación de código</h2>
                 </hgroup>
                 <article>
                     <ul>
-                        <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-                        <li>Title capitalization is title case
+                        <li>Su objetivo es traducir todas las instruccines de la representación intermedia al lenguaje objetivo (ensambladdor).</li>
+                        <li>Asignar espacio para variables, arreglos, etc.</li>
+                        <li>Respetar las convenciones del lenguaje:
                             <ul>
-                                <li>Subtitle capitalization is title case</li>
+                                <li>Llamadas a funciones.</li>
+                                <li>Uso de registros (temporales, argumentos, etc.)</li>
                             </ul>
                         </li>
-                        <li>Subtitle capitalization is title case</li>
-                        <li>Titles and subtitles should never have a period at the end</li>
+                        <li>Entre otras cosas.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Generación de código</h2>
+                </hgroup>
+                <article>
+                    <pre>
+ __________                             __________
+|          |                           |          |
+|   IRT    |--- Intermediate Code ---> | Code Gen |--> Target Code
+|__________|                           |__________|
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Recordatorio de CCIII</h2>
+                </hgroup>
+                <article>
+                    <pre>
+                                 ------------------
+                                |                   |
+                                |                   |
+                                |                   |
+                                |      Memoria      |
+                                |                   |
+                                |                   |
+                                |                   |
+                                |------------------|
+                                |         |         |
+                                |  Regs.  |   ALU   |
+                                |         |         |
+                                |------------------|
+                                | Unidad de Control |
+                                 ------------------
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Memoria</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Direccionamiento plano.</li>
+                        <li>Organizado en words.</li>
+                        <li>Direccionado por bytes.</li>
+                        <li>Utilizado para almacenar:
+                            <ul>
+                                <li>El programa a ejecutar</li>
+                                <li>Variables</li>
+                                <li>Stack</li>
+                                <li>Heap</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Memoria</h2>
+                </hgroup>
+                <article>
+                    <pre>
+                         ------------------
+                        |                   |
+                        |       Stack       |  - Locales y parametros
+                        |                   |
+                        |------------------|
+                        |        ||         |
+                        |        \/         |
+                        |                   |
+                        |        /\         |
+                        |        ||         |
+                        |------------------|
+                        |                   |
+                        |       Heap        |  - Campos y arreglos
+                        |                   |
+                        |------------------|
+                        |       Codigo      |
+                         ------------------
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Load/Store
+                            <ul>
+                                <li>Operaciones únicamente entre registros.</li>
+                                <li>Los datos se cargan primero a registros.</li>
+                                <li>Los resultados se escriben de regreso a memoria.</li>
+                            </ul>
+                        </li>
+                        <li>Muy rápidos.</li>
+                        <li>Limitados en cantidad.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>ALU</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Arithmetic and Logic Unit.</li>
+                        <li>Ejecuta la mayoria de operaciones.</li>
+                        <li>Utiliza la forma:
+                            <ul>
+                                <li>OP Rd Rs Rt</li>
+                            </ul>
+                        </li>
+                        <li>Soporta:
+                            <ul>
+                                <li>Operaciones aritméticas (add, sub, mul)</li>
+                                <li>Operaciones lógicas (and, or, sll)</li>
+                                <li>Operaciones de comparación (seq, slt, sge)</li>
+                            </ul>
+                        </li>
+                        <li>Algunas operaciones pueden lanzar excepciones:
+                            <ul>
+                                <li>Overflow/Underfow</li>
+                                <li>NaN</li>
+                            </ul>
+                        </li>
+                        <li>Notación con y sin signo.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Unidad de Control</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Encargado de administrar la secuencia de instrucciones.</li>
+                        <li>Ejecución de instrucciones
+                            <ul>
+                                <li>Obtener la instrucción de memoria.</li>
+                                <li>Decodificación.</li>
+                                <li>Ejecución.</li>
+                                <li>Incrementar el PC.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Unidad de Control</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Saltos incondicionales:
+                            <ul>
+                                <li>Obtener la instrucción de memoria.</li>
+                                <li>Decodificación.</li>
+                                <li>Obtener dirección del salto (de una etiqueta o un registro).</li>
+                                <li>Actualizar PC.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Unidad de Control</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Saltos condicionales:
+                            <ul>
+                                <li>Se ejeccuta un test, si es exitoso se calcula el salto, de lo contrario se obtiene la siguiente instrucción.</li>
+                                <li>Instrucciones de la forma b<b>relop</b> Rs Rt label.</li>
+                                <li><b>relop</b> puede ser eq, lt, gt, ge, ne, le.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Unidad de Control</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>System calls:
+                            <ul>
+                                <li>Codificadas manualmente en assembler.</li>
+                                <li>Para el compilador, son una llamada a una función.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Lo que la máquina entiende...</h2>
+                </hgroup>
+                <article>
+                    <pre>
+                            location  	data
+                            
+                            0x4009b0:	3c1c0fc0	 
+                            0x4009b4:	279c7640	 
+                            0x4009b8:	0399e021	 
+                            0x4009bc:	8f998044	 
+                            0x4009c0:	27bdffe0	 
+                            0x4009c4:	afbf001c	 
+                            0x4009c8:	afbc0018	 
+                            0x4009cc:	0320f809	 
+                            0x4009d0:	2404000a	 
+                            0x4009d4:	8fbf001c	 
+                            0x4009d8:	8fbc0018	 
+                            0x4009dc:	27bd0020	 
+                            0x4009e0:	03e00008	 
+                            0x4009e4:	00001025	 
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Lo que la máquina entiende...</h2>
+                </hgroup>
+                <article>
+                    <pre>
+                            location  	data		assembly instruction
+            main:
+                [test.c:   3] 0x4009b0:	3c1c0fc0	lui	gp,0xfc0
+                [test.c:   3] 0x4009b4:	279c7640	addiu	gp,gp,30272
+                [test.c:   3] 0x4009b8:	0399e021	addu	gp,gp,t9
+                [test.c:   3] 0x4009bc:	8f998044	lw	t9,-32700(gp)
+                [test.c:   3] 0x4009c0:	27bdffe0	addiu	sp,sp,-32
+                [test.c:   3] 0x4009c4:	afbf001c	sw	ra,28(sp)
+                [test.c:   3] 0x4009c8:	afbc0018	sw	gp,24(sp)
+                [test.c:   3] 0x4009cc:	0320f809	jalr	ra,t9
+                [test.c:   3] 0x4009d0:	2404000a	li	a0,10
+                [test.c:   3] 0x4009d4:	8fbf001c	lw	ra,28(sp)
+                [test.c:   3] 0x4009d8:	8fbc0018	lw	gp,24(sp)
+                [test.c:   3] 0x4009dc:	27bd0020	addiu	sp,sp,32
+                [test.c:   3] 0x4009e0:	03e00008	jr	ra
+                [test.c:   3] 0x4009e4:	00001025	move	v0,zero
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>¿Por qué generar ensamblador en vez de binario?</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Es más símple, al ser texto (símbolos).</li>
+                        <li>Representa una capa de abstracción lógica.</li>
+                        <li>Podemos describir una arquitectura en base a su assembler.</li>
+                        <li>Podemos extender el lenguaje fácilmente (macro assembler).</li>
+                        <li>No obstante, implica un proceso adicional de ensamblaje y linking.</li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Lenguaje Ensamblador</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Código reposicionable:
+                            <ul>
+                                <li>Direcciones virtuales.</li>
+                                <li>Direccionamiento real se calcula en tiempo de linking.</li>
+                                <li>Permite compilación separada.</li>
+                            </ul>
+                        </li>
+                        <li>Código absoluto:
+                            <ul>
+                                <li>Direcciones hard-coded.</li>
+                                <li>Implementación directa.</li>
+                                <li>Inflexible, dificulta recargar el código generado.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Lenguaje Ensamblador</h2>
+                </hgroup>
+                <article>
+                    <pre>
+                        item:
+                            .word	1
+                            .text
+                        fib:
+                            subu	$sp, 40
+                            sw		$31, 28($sp)
+                            sw		$4, 40($sp)
+                            sw		$16, 20($sp)
+                            #	  if(n == 0) return 0;
+                            lw		$14, 40($sp)
+                            bne		$14, 0, $32
+                            move	$2, $0
+                            b		lab2
+                        lab1:
+                            lw		$15, 40($sp)
+                            bne		$15, 1, $33
+                            li		$2, 1
+                            b		lab1
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide class="segue dark nobackground">
+                <aside class="gdbar"><img src="images/ug_128.png"></aside>
+                <hgroup class="auto-fadein">
+                    <h2>Convenios</h2>
+                    <h3>Generación de código</h3>
+                </hgroup>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Memoria</h2>
+                </hgroup>
+                <article>
+                    <pre>
+                         ------------------    0x7fffffff
+                        |                   |
+                        |       Stack       |  - Locales y parametros
+                        |                   |
+                        |------------------|
+                        |        ||         |
+                        |        \/         |
+                        |                   |
+                        |        /\         |
+                        |        ||         |
+                        |------------------|
+                        |                   |
+                        |       Heap        |  - Campos y arreglos
+                        |                   |
+                        |------------------|
+                        |       Text        |
+                        |------------------|   0x40000000
+                        |     Reserved      |
+                         ------------------
+                    </pre>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Memoria</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Stack:
+                            <ul>
+                                <li>Crece hacia abajo (restando).</li>
+                                <li>Organizado en frames.</li>
+                                <li>Utilizado para variables locales y parámetros.</li>
+                            </ul>
+                        </li>
+                        <li>Heap:
+                            <ul>
+                                <li>Utilizado para campos y objetos (arreglos).</li>
+                                <li>Organizado en listas.</li>
+                                <li>Ojo con problemas de accesos no alineados.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Paso de argumentos</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Varias formas:
+                            <ul>
+                                <li>Por referencia.</li>
+                                <li>Por valor.</li>
+                            </ul>
+                        </li>
+                        <li>Cómo los enviamos:
+                            <ul>
+                                <li>Utilizado el stack.</li>
+                                <li>Utilizando registros.</li>
+                                <li>O una combinación de ambos.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article>
+                    <table>
+                        <tr>
+                            <td class="centered highlight">0</td>
+                            <td class="centered highlight">zero</td>
+                            <td class="highlight">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article>
+                    <p>Dirección de retorno de una función, cargado por jal y jalr.</p>
+                    <table>
+                        <tr>
+                            <td class="centered">0</td>
+                            <td class="centered">zero</td>
+                            <td class="">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">31</td>
+                            <td class="centered highlight">ra</td>
+                            <td class="highlight">return address</td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article>
+                    <p>Punteros para manejo de memoria y el stack.</p>
+                    <table>
+                        <tr>
+                            <td class="centered">0</td>
+                            <td class="centered">zero</td>
+                            <td class="">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">28</td>
+                            <td class="centered highlight">gp</td>
+                            <td class="highlight">Global pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">29</td>
+                            <td class="centered highlight">sp</td>
+                            <td class="highlight">Stack pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">30</td>
+                            <td class="centered highlight">fp</td>
+                            <td class="highlight">Frame pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">31</td>
+                            <td class="centered">ra</td>
+                            <td class="">return address</td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article class="smaller">
+                    <p>Resevado para el ensamblador, útil para instrucciones compuestas.</p>
+                    <table>
+                        <tr>
+                            <td class="centered">0</td>
+                            <td class="centered">zero</td>
+                            <td class="">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">1</td>
+                            <td class="centered highlight">at</td>
+                            <td class="highlight">Assembler temporal</td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td class="centered">28</td>
+                            <td class="centered">gp</td>
+                            <td class="">Global pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">29</td>
+                            <td class="centered">sp</td>
+                            <td class="">Stack pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">30</td>
+                            <td class="centered">fp</td>
+                            <td class="">Frame pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">31</td>
+                            <td class="centered">ra</td>
+                            <td class="">return address</td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article class="smaller">
+                    <p>Utilizados para retornar el resultado de expresiones de funciones.</p>
+                    <table>
+                        <tr>
+                            <td class="centered">0</td>
+                            <td class="centered">zero</td>
+                            <td class="">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">1</td>
+                            <td class="centered">at</td>
+                            <td class="">Assembler temporal</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">2 - 3</td>
+                            <td class="centered highlight">v0 - v1</td>
+                            <td class="highlight">Expression eval, and return results.</td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td class="centered">28</td>
+                            <td class="centered">gp</td>
+                            <td class="">Global pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">29</td>
+                            <td class="centered">sp</td>
+                            <td class="">Stack pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">30</td>
+                            <td class="centered">fp</td>
+                            <td class="">Frame pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">31</td>
+                            <td class="centered">ra</td>
+                            <td class="">return address</td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article class="smaller">
+                    <p>Utilizados para argumentos, si no hay, se puede usar como temporales. Si necesitan más de 4, se usa el stack.</p>
+                    <table>
+                        <tr>
+                            <td class="centered">0</td>
+                            <td class="centered">zero</td>
+                            <td class="">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">1</td>
+                            <td class="centered">at</td>
+                            <td class="">Assembler temporal</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">2 - 3</td>
+                            <td class="centered">v0 - v1</td>
+                            <td class="">Expression eval, and return results</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">4 - 7</td>
+                            <td class="centered highlight">a0 - a3</td>
+                            <td class="highlight">Arguments 1 to 4.</td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td class="centered">28</td>
+                            <td class="centered">gp</td>
+                            <td class="">Global pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">29</td>
+                            <td class="centered">sp</td>
+                            <td class="">Stack pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">30</td>
+                            <td class="centered">fp</td>
+                            <td class="">Frame pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">31</td>
+                            <td class="centered">ra</td>
+                            <td class="">return address</td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Registros</h2>
+                </hgroup>
+                <article class="smaller">
+                    <p>Temporales, el convenio asigna la responsabilidad de preservarlos a quien corresponda.</p>
+                    <table>
+                        <tr>
+                            <td class="centered">0</td>
+                            <td class="centered">zero</td>
+                            <td class="">Hard-wired to zero</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">1</td>
+                            <td class="centered">at</td>
+                            <td class="">Assembler temporal</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">2 - 3</td>
+                            <td class="centered">v0 - v1</td>
+                            <td class="">Expression eval, and return results</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">4 - 7</td>
+                            <td class="centered">a0 - a3</td>
+                            <td class="">Arguments 1 to 4.</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">8 - 15</td>
+                            <td class="centered highlight">t0 - t7</td>
+                            <td class="highlight">Temporary (caller saved)</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">16 - 23</td>
+                            <td class="centered highlight">s0 - s7</td>
+                            <td class="highlight">Saved temporary (callee saved)</td>
+                        </tr>
+                        <tr>
+                            <td class="centered highlight">24 - 25</td>
+                            <td class="centered highlight">t8 - t9</td>
+                            <td class="highlight">Temporary (caller saved)</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">28</td>
+                            <td class="centered">gp</td>
+                            <td class="">Global pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">29</td>
+                            <td class="centered">sp</td>
+                            <td class="">Stack pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">30</td>
+                            <td class="centered">fp</td>
+                            <td class="">Frame pointer</td>
+                        </tr>
+                        <tr>
+                            <td class="centered">31</td>
+                            <td class="centered">ra</td>
+                            <td class="">return address</td>
+                        </tr>
+                    </table>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Al llamar a un procedimiento</h2>
+                </hgroup>
+                <article>
+                    <ul>
+                        <li>Se obtiene un nuevo stack frame.</li>
+                        <li>El frame almacena parámetros y variables locales.</li>
+                        <li>El caller debe guardar:
+                            <ul>
+                                <li>Registros caller saved (tX).</li>
+                                <li>Parámetros (aX).</li>
+                                <li>Return address (ra).</li>
+                            </ul>
+                        </li>
+                        <li>Callee debe guardar:
+                            <ul>
+                                <li>Dirección inicial del stack pointer.</li>
+                                <li>Registros callee saved.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Dirección de los argumentos 5 a n es <b>(n-4)*4+$fp</b>.</li>
+                            <li>Variables locales son offsets negativos de $fp.</li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-1.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al llamar a un procedimiento el caller debe:
+                                <ul>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-2.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al llamar a un procedimiento el caller debe:
+                                <ul>
+                                    <li>Push de los tX necesarios al stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-3.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al llamar a un procedimiento el caller debe:
+                                <ul>
+                                    <li>Push de los tX necesarios al stack.</li>
+                                    <li>Cargar argumentos 1 a 4 en a0 a3.</li>
+                                    <li>Cargar resto de argumentos al stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-4.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al llamar a un procedimiento el caller debe:
+                                <ul>
+                                    <li>Push de los tX necesarios al stack.</li>
+                                    <li>Cargar argumentos 1 a 4 en a0 a3.</li>
+                                    <li>Cargar resto de argumentos al stack.</li>
+                                    <li>Saltar a la función (jal o jalr).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-4.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-4.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                    <li>Copiar el contenido de $sp a $fp.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-5.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                    <li>Copiar el contenido de $sp a $fp.</li>
+                                    <li>Push $fp al stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-6.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                    <li>Copiar el contenido de $sp a $fp.</li>
+                                    <li>Push $fp al stack.</li>
+                                    <li>Push $ra al stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-7.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                    <li>Copiar el contenido de $sp a $fp.</li>
+                                    <li>Push $fp al stack.</li>
+                                    <li>Push $ra al stack.</li>
+                                    <li>Push los sX necesarios al stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-8.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                    <li>Copiar el contenido de $sp a $fp.</li>
+                                    <li>Push $fp al stack.</li>
+                                    <li>Push $ra al stack.</li>
+                                    <li>Push los sX necesarios al stack.</li>
+                                    <li>Reservar espacio para variables locales.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-9.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al iniciar el callee debe:
+                                <ul>
+                                    <li>Copiar el contenido de $sp a $fp.</li>
+                                    <li>Push $fp al stack.</li>
+                                    <li>Push $ra al stack.</li>
+                                    <li>Push los sX necesarios al stack.</li>
+                                    <li>Reservar espacio para variables locales.</li>
+                                    <li>Ejecutar...</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-9.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-9.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                    <li>Cargar valores de retorno a $v0 y $v1.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-9.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                    <li>Cargar valores de retorno a $v0 y $v1.</li>
+                                    <li>Liberar espacio para variables locales.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-8.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                    <li>Cargar valores de retorno a $v0 y $v1.</li>
+                                    <li>Liberar espacio para variables locales.</li>
+                                    <li>Restaurar los registros sX del stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-7.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                    <li>Cargar valores de retorno a $v0 y $v1.</li>
+                                    <li>Liberar espacio para variables locales.</li>
+                                    <li>Restaurar los registros sX del stack.</li>
+                                    <li>Restaurar $ra del stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-6.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                    <li>Cargar valores de retorno a $v0 y $v1.</li>
+                                    <li>Liberar espacio para variables locales.</li>
+                                    <li>Restaurar los registros sX del stack.</li>
+                                    <li>Restaurar $ra del stack.</li>
+                                    <li>Restaurar $fp del stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-10.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al final el callee debe:
+                                <ul>
+                                    <li>Cargar valores de retorno a $v0 y $v1.</li>
+                                    <li>Liberar espacio para variables locales.</li>
+                                    <li>Restaurar los registros sX del stack.</li>
+                                    <li>Restaurar $ra del stack.</li>
+                                    <li>Restaurar $fp del stack.</li>
+                                    <li>Ejecutar jr $ra para regresar al caller.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-11.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al regresar, el caller debe:
+                                <ul>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-11.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al regresar, el caller debe:
+                                <ul>
+                                    <li>Descartar los argumentos en el stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-12.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al regresar, el caller debe:
+                                <ul>
+                                    <li>Descartar los argumentos en el stack.</li>
+                                    <li>Restaurar los registros tX del stack.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-13.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Stack frame</h2>
+                </hgroup>
+                <article>
+                    <div class="columns-2">
+                        <ul>
+                            <li>Al regresar, el caller debe:
+                                <ul>
+                                    <li>Descartar los argumentos en el stack.</li>
+                                    <li>Restaurar los registros tX del stack.</li>
+                                    <li>Continuar...</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <img src="images/stack-13.png" alt="stack" title="stack">
+                        </ul>
+                    </div>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Generación de expresiones</h2>
+                </hgroup>
+                <article>
+                    <ul class="build">
+                        <li>x = y op z:
+                            <ul class="build">
+                                <li>Seleccionar un registro para cargar el valor de <b>y</b>, digamos $t0:
+                                    <ul class="build">
+                                        <li>Si <b>y</b> está en otro registro ($s0): add $t0 $s0 $0</li>
+                                        <li>Si <b>y</b> es un inmediato: li $t0 25</li>
+                                        <li>Si <b>y</b> está en memoria (apuntado por $s0): lw $t0 0($s0)</li>
+                                        <li>Si <b>y</b> está en memoria (apuntado por un símbolo): la $t0 label</li>
+                                    </ul>
+                                </li>
+                                <li>Hacer lo mismo para <b>z</b>, digamos al registro $t1.</li>
+                                <li>Selecccionar un registro para guardar <b>x</b>, digamos $t3.</li>
+                                <li>Operar <b>y</b> y <b>z</b>: op $t3 $t0 $t1</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </slide>
+            
+            <slide>
+                <hgroup>
+                    <h2>Generación de expresiones</h2>
+                </hgroup>
+                <article>
+                    <ul class="build">
+                        <li>Este algoritmo es muy simple, lo cual lo hace fácil de implementar.</li>
+                        <li>Se debe tener cuidado con el uso de los registros, los temporales son muy limitados (18).</li>
+                        <li>Es posible que encontremos instrucciones sin un equivalente directo, se deben expandir a varias instrucciones.</li>
+                        <li>No es muy eficiente, y puede derivar en muchas operaciones con cero, o copias de constantes innecesarias.</li>
+                        <li>Para esto se aplicarán optimizaciones, mejorando el programa generado.</li>
+                        <li>Se prefiere tener un generador de código <b>muy, muy</b> simple.</li>
                     </ul>
                 </article>
             </slide>
