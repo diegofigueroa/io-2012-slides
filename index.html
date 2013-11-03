@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title></title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <!--This one seems to work all the time, but really small on ipad-->
-    <!--<meta name="viewport" content="initial-scale=0.4">-->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" media="all" href="theme/css/default.css">
-    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
-    <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
-    <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
-  </head>
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+        <!--This one seems to work all the time, but really small on ipad-->
+        <!--<meta name="viewport" content="initial-scale=0.4">-->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" media="all" href="theme/css/default.css">
+        <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+        <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+        <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+    </head>
     <body style="opacity: 0">
         <slides class="layout-widescreen">
             <slide class="logoslide nobackground">
@@ -61,11 +61,11 @@
                 </hgroup>
                 <article>
                     <pre>
- __________            __________                             __________
+__________            __________                             __________
 |          |          |          |                           |          |
 |   AST    | ------->|   IRT    |--- Intermediate Code ---> | Code Gen |--> Target Code
 |__________|          |__________|                           |__________|
-                    </pre>
+</pre>
                 </article>
             </slide>
             
@@ -201,11 +201,11 @@
 
 
 
-    if( x < y ){
-        a = 0;
-    }else{
-        a = 1;
-    }
+if( x < y ){
+a = 0;
+}else{
+a = 1;
+}
 
 
 
@@ -224,30 +224,30 @@
                         <ul>
                             <li>
                                 <pre class="prettyprint" data-lang="irt">
-            
-            start
-              |
-            Load X
-              |
-            Load Y
-              |
-    Branch(x < y, label_true)
-              |
-            Load 0
-              |
-            Store a
-              |
-            Jump(label_end)
-              |
-        Label(label_true)
-              |
-            Load 1
-              |
-            Store a
-              |
-        Label(label_end)
-              |
-             end
+
+start
+|
+Load X
+|
+Load Y
+|
+Branch(x < y, label_true)
+|
+Load 0
+|
+Store a
+|
+Jump(label_end)
+|
+Label(label_true)
+|
+Load 1
+|
+Store a
+|
+Label(label_end)
+|
+end
 
 </pre>
                             </li>
@@ -277,19 +277,19 @@
                 </hgroup>
                 <article>
                     <pre>
-      if                destruct(if):
-    / | \                   cList = destruct(if.c)
-   c  x  y                  xList = destruct(if.x)
-                            yList = destruct(if.y)
-                            
-                            end = NOP.new
-                            xList.end.next = end
-                            yList.end.next = end
-                            
-                            cList.true_end.next  = xList.start
-                            cList.false_end.next = yList.start
-                            
-                            return List.new(cList.start, end)
+if                destruct(if):
+/ | \                   cList = destruct(if.c)
+c  x  y                  xList = destruct(if.x)
+yList = destruct(if.y)
+
+end = NOP.new
+xList.end.next = end
+yList.end.next = end
+
+cList.true_end.next  = xList.start
+cList.false_end.next = yList.start
+
+return List.new(cList.start, end)
 </pre>
                 </article>
             </slide>
@@ -301,17 +301,17 @@
                 </hgroup>
                 <article>
                     <pre>
-    while               destruct(while):
-    /  \                    cList = destruct(while.c)
-   c    x                   xList = destruct(while.x)
-                            
-                            end = NOP.new
-                            xList.end.next = cList.start
-                            
-                            cList.true_end.next  = xList.start
-                            cList.false_end.next = end
-                            
-                            return List.new(cList.start, end)
+while               destruct(while):
+/  \                    cList = destruct(while.c)
+c    x                   xList = destruct(while.x)
+
+end = NOP.new
+xList.end.next = cList.start
+
+cList.true_end.next  = xList.start
+cList.false_end.next = end
+
+return List.new(cList.start, end)
 </pre>
                 </article>
             </slide>
@@ -424,9 +424,9 @@
             <slide class="backdrop"></slide>
             
         </slides>
-    <!--[if IE]>
-      <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-      <script>CFInstall.check({mode: 'overlay'});</script>
-    <![endif]-->
-  </body>
+        <!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+    </body>
 </html>
